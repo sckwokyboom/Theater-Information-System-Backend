@@ -1,0 +1,18 @@
+version: '3.8'
+
+name: theater_information_system
+
+services:
+  postgres:
+    container_name: theater_db
+    image: postgres:16.3
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sver25MD
+      POSTGRES_DB: theater_information_system
+#      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - ../src/main/resources/db:/docker-entrypoint-initdb.d
+    restart: always
