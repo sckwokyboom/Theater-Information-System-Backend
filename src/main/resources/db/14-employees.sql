@@ -18,6 +18,7 @@ create table if not exists employees
             references theaters,
     first_name         varchar(100)                                                 not null,
     second_name        varchar(100)                                                 not null,
+    patronymic        varchar(100)                                                 not null,
     date_of_birth      date                                                         not null,
     gender             gender                                                       not null,
     salary             integer                                                      not null
@@ -42,6 +43,8 @@ comment on column employees.theater_id is 'Идентификатор театр
 comment on column employees.first_name is 'Имя.';
 
 comment on column employees.second_name is 'Фамилия.';
+
+comment on column employees.patronymic is 'Отчество.';
 
 comment on column employees.date_of_birth is 'Дата рождения.';
 

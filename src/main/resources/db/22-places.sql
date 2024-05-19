@@ -19,6 +19,18 @@ comment on column places.hall_id is 'Идентификатор зала.';
 
 comment on column places.price_coefficient is 'Коэффициент цены за место.';
 
-alter table places
-    owner to postgres;
+
+CREATE OR REPLACE FUNCTION check_hall_exists() RETURNS TRIGGER AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM halls WHERE id = NEW.hall_id) THEN
+        RAISE EXCEPTION 'The hall does not exist';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_hall_exists
+    BEFORE INSERT ON places
+    FOR EACH ROW EXECUTE FUNCTION check_hall_exists();
+
 

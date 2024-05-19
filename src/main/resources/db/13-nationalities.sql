@@ -11,7 +11,3 @@ comment on table nationalities is 'Национальности.';
 comment on column nationalities.id is 'Идентификатор.';
 
 comment on column nationalities.name is 'Название.';
-
--- alter table nationalities
---     owner to postgres;
-

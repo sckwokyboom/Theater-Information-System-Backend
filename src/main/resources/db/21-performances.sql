@@ -75,3 +75,17 @@ execute procedure public.check_performance_date();
 
 alter sequence perfomances_id_seq owned by performances.id;
 
+CREATE OR REPLACE FUNCTION check_performance_date() RETURNS TRIGGER AS $$
+BEGIN
+    IF NEW.date < CURRENT_DATE THEN
+        RAISE EXCEPTION 'The performance date cannot be in the past';
+    END IF;
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trg_check_performance_date
+    BEFORE INSERT ON performances
+    FOR EACH ROW EXECUTE FUNCTION check_performance_date();
+
+

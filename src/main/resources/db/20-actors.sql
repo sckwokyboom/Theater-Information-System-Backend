@@ -1,22 +1,24 @@
 create table if not exists actors
 (
-    id          serial
+    id             serial
         constraint actors_pk
             primary key,
-    artist_id   integer              not null
+    artist_id      integer         not null
         constraint actors_artist_id_fk
             references artists,
-    voice       voice_type           not null,
-    weight      integer              not null
+    voice          voice_type      not null,
+    weight         integer         not null
         constraint weight_check
             check (weight > 0),
-    height      integer              not null
+    height         integer         not null
         constraint height_check
             check (height > 0),
-    hair_color  varchar              not null,
-    eye_color   varchar              not null,
-    skin_color  skin_color_type      not null,
-    nationality cng_nationality_type not null
+    hair_color     varchar         not null,
+    eye_color      varchar         not null,
+    skin_color     skin_color_type not null,
+    nationality_id integer         not null
+        constraint actors_nationality_id_fk
+            references nationalities
 );
 
 comment on table actors is 'Актёры.';
@@ -37,7 +39,7 @@ comment on column actors.eye_color is 'Цвет глаз.';
 
 comment on column actors.skin_color is 'Цвет кожи.';
 
-comment on column actors.nationality is 'Национальность.';
+comment on column actors.nationality_id is 'Идентификатор национальности.';
 
 alter table actors
     owner to postgres;

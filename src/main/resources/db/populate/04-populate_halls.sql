@@ -1,12 +1,12 @@
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (1, 'Первый', 2000);
+VALUES (1, 'Первый', 10);
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (2, 'Второй', 2500);
+VALUES (2, 'Второй', 5);
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (3, 'Третий', 1000);
+VALUES (3, 'Третий', 5);
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (4, 'Четвёртый', 500);
+VALUES (4, 'Четвёртый', 5);
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (5, 'Пятый', 100);
+VALUES (5, 'Пятый', 5);
 INSERT INTO halls (id, title, number_of_seats)
-VALUES (6, 'Шестой', 500);
+VALUES (6, 'Шестой', 5);

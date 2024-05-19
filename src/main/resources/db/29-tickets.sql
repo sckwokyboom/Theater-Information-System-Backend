@@ -14,7 +14,8 @@ create table if not exists tickets
             references places,
     subscription_id integer
         constraint tickets_subscriptions_id_fk
-            references subscriptions
+            references subscriptions,
+    sale_date       date    not null
 );
 
 comment on table tickets is 'Билеты на спектакли';
@@ -54,8 +55,36 @@ BEGIN
 END;
 $$;
 
-alter function public.check_prevent_duplicate_tickets() owner to postgres;
+CREATE OR REPLACE FUNCTION check_place_performance_hall()
+    RETURNS TRIGGER AS $$
+DECLARE
+    performance_hall_id INTEGER;
+    place_hall_id INTEGER;
+BEGIN
+    -- Получаем hall_id для performance_id
+    SELECT hall_id INTO performance_hall_id
+    FROM performances
+    WHERE id = NEW.performance_id;
 
+    -- Получаем hall_id для place_id
+    SELECT hall_id INTO place_hall_id
+    FROM places
+    WHERE id = NEW.place_id;
+
+    -- Проверяем, совпадают ли hall_id
+    IF performance_hall_id IS DISTINCT FROM place_hall_id THEN
+        RAISE EXCEPTION 'Place_id % does not belong to the same hall as performance_id %', NEW.place_id, NEW.performance_id;
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+
+CREATE TRIGGER trigger_check_place_performance_hall
+    BEFORE INSERT ON tickets
+    FOR EACH ROW
+EXECUTE FUNCTION check_place_performance_hall();
 
 
 create trigger check_duplicate_tickets
