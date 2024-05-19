@@ -6,15 +6,17 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import ru.nsu.fit.sckwo.model.entitiies.Play
-import ru.nsu.fit.sckwo.repositories.PlayRepository
+import ru.nsu.fit.sckwo.model.entitiies.Nationality
+import ru.nsu.fit.sckwo.repositories.NationalityRepository
 
 @Controller
-@RequestMapping("/plays")
+@RequestMapping("/nationalities")
 @CrossOrigin(origins = ["http://127.0.0.1:5173"])
-class PlayController @Autowired constructor(private val playRepository: PlayRepository) {
+class NationalityController @Autowired constructor(private val nationalityRepository: NationalityRepository) {
     @GetMapping("")
-    fun getAllPlays(): ResponseEntity<List<Play>> {
-        return ResponseEntity.ok(playRepository.getAllPlays())
+    fun getAllNationalities(): ResponseEntity<List<Nationality>> {
+        return ResponseEntity.ok(
+            nationalityRepository.getAllNationalities()
+        )
     }
 }

@@ -20,7 +20,15 @@ class EmployeeController @Autowired constructor(private val employeeRepository: 
         @RequestParam(required = false) minSalary: Int?,
         @RequestParam(required = false) maxSalary: Int?,
         @RequestParam(required = false) amountOfChildren: Int?,
-    ): ResponseEntity<List<Employee>> {
+        @RequestParam(required = false) goneOnTour: Boolean?,
+        @RequestParam(required = false) cameOnTour: Boolean?,
+        @RequestParam(required = false) tourStartDate: String?,
+        @RequestParam(required = false) tourEndDate: String?,
+        @RequestParam(required = false) tourPlayId: Int?,
+        @RequestParam(required = false) performanceId: Int?,
+
+
+        ): ResponseEntity<List<Employee>> {
         val employeeType: EmployeeType = if (employeeTypeName != null) {
             EmployeeType.valueOf(employeeTypeName)
         } else {
@@ -32,7 +40,13 @@ class EmployeeController @Autowired constructor(private val employeeRepository: 
                 gender,
                 minSalary,
                 maxSalary,
-                amountOfChildren
+                amountOfChildren,
+                goneOnTour,
+                cameOnTour,
+                tourStartDate,
+                tourEndDate,
+                tourPlayId,
+                performanceId
             )
         )
     }

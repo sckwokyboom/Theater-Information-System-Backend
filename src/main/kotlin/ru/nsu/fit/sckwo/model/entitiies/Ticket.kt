@@ -2,8 +2,8 @@ package ru.nsu.fit.sckwo.model.entitiies
 
 data class Ticket(
     val id: Int,
-    val performanceId: Int,
+    val playTitle: String,
     val price: Double,
+    val hallTitle: String,
     val placeId: Int,
-    val subscriptionId: Int,
 )

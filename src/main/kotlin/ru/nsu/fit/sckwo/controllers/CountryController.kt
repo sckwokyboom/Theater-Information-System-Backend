@@ -13,7 +13,7 @@ import ru.nsu.fit.sckwo.repositories.CountryRepository
 @RequestMapping("/countries")
 @CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class CountryController @Autowired constructor(private val countryRepository: CountryRepository) {
-    @GetMapping("/all")
+    @GetMapping("")
     fun getAllCountries(): ResponseEntity<List<Country>> {
         return ResponseEntity.ok(
             countryRepository.getAllCountries()

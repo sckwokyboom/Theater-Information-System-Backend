@@ -15,6 +15,7 @@ class SqlQueryBuilder {
 
     enum class QueryType {
         SELECT,
+        SELECT_DISTINCT,
         INSERT_INTO,
         UPDATE,
         DELETE
@@ -55,6 +56,11 @@ class SqlQueryBuilder {
         this.currentQueryType = QueryType.SELECT
         this.selectClause = selectClause
         return this
+    }
+
+    fun selectDistinct(selectClause: String): SqlQueryBuilder {
+        currentQueryType = QueryType.SELECT_DISTINCT
+        return select(selectClause)
     }
 
     fun delete(): SqlQueryBuilder {
@@ -114,6 +120,11 @@ class SqlQueryBuilder {
                 sql.append("FROM ").append(fromClause).append(" ")
             }
 
+            QueryType.SELECT_DISTINCT -> {
+                sql.append("SELECT DISTINCT ").append(selectClause).append(" ")
+                sql.append("FROM ").append(fromClause).append(" ")
+            }
+
             QueryType.INSERT_INTO -> {
                 sql.append("INSERT INTO ").append(insertIntoClause).append(" VALUES ").append(valuesClause).append(" ")
             }
@@ -126,6 +137,7 @@ class SqlQueryBuilder {
                 sql.append("DELETE ")
                 sql.append("FROM ").append(fromClause).append(" ")
             }
+
         }
 
         for (join in joinClauses) {

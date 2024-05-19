@@ -2,6 +2,9 @@ package ru.nsu.fit.sckwo.model.entitiies
 
 data class Actor(
     val id: Int,
+    val firstName: String,
+    val secondName: String,
+    val patronymic: String,
     val artistId: Int,
     val voiceType: String,
     val weight: Int?,
@@ -10,4 +13,5 @@ data class Actor(
     val eyeColor: String?,
     val skinColor: String?,
     val nationalityId: Int?,
+    val nationalityName: String?,
 )

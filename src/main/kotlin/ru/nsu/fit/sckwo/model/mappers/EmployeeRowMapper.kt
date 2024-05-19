@@ -10,6 +10,7 @@ class EmployeeRowMapper : RowMapper<Employee> {
             rs.getInt("id"),
             rs.getString("first_name"),
             rs.getString("second_name"),
+            rs.getString("patronymic"),
             rs.getDate("date_of_birth").toLocalDate(),
             rs.getDate("date_of_employment").toLocalDate(),
             rs.getString("gender"),

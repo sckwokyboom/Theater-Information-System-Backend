@@ -8,10 +8,10 @@ class TicketRowMapper : RowMapper<Ticket> {
     override fun mapRow(rs: ResultSet, rowNum: Int): Ticket {
         return Ticket(
             rs.getInt("id"),
-            rs.getInt("performance_id"),
+            rs.getString("play_title"),
             rs.getDouble("price"),
+            rs.getString("hall_title"),
             rs.getInt("place_id"),
-            rs.getInt("subscription_id")
         )
     }
 }
