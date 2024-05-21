@@ -1,9 +1,6 @@
 CREATE SEQUENCE IF NOT EXISTS theater_id_seq
     AS INTEGER;
 
-ALTER SEQUENCE theater_id_seq OWNER TO postgres;
-
-
 
 CREATE TABLE IF NOT EXISTS theaters
 (

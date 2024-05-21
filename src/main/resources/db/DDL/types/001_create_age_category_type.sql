@@ -2,7 +2,7 @@ DO
 $$
     BEGIN
         BEGIN
-            CREATE TYPE public.SKIN_COLOR_TYPE AS ENUM ('ОЧЕНЬ СВЕТЛЫЙ', 'СВЕТЛЫЙ', 'СРЕДНИЙ', 'ТЕМНЫЙ', 'ОЧЕНЬ ТЕМНЫЙ', 'ЧЕРНЫЙ');
+            CREATE TYPE public.AGE_CATEGORY AS ENUM ('0', '6', '12', '16', '18');
         EXCEPTION
             WHEN duplicate_object THEN
                 RAISE NOTICE 'Type already exists, skipping creation.';
