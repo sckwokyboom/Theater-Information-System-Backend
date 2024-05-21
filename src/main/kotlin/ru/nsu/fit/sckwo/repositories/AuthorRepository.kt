@@ -2,7 +2,7 @@ package ru.nsu.fit.sckwo.repositories
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.nsu.fit.sckwo.model.entitiies.Author
+import ru.nsu.fit.sckwo.model.entities.Author
 import ru.nsu.fit.sckwo.model.mappers.AuthorRowMapper
 import ru.nsu.fit.sckwo.utils.SqlQueryBuilder
 

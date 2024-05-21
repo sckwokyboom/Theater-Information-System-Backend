@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import ru.nsu.fit.sckwo.model.entitiies.Performance
+import ru.nsu.fit.sckwo.model.entities.Performance
 import ru.nsu.fit.sckwo.repositories.PerformanceRepository
 
 @Controller
@@ -24,6 +24,7 @@ class PerformanceController @Autowired constructor(private val performanceReposi
         @RequestParam(required = false) authorId: Int?,
         @RequestParam(required = false) authorCountryId: Int?,
         @RequestParam(required = false) centuryOfPlayWriting: Int?,
+        @RequestParam(required = false) isUpcoming: Boolean?,
     ): ResponseEntity<List<Performance>> {
         return ResponseEntity.ok(
             performanceRepository.getPerformances(
@@ -34,7 +35,8 @@ class PerformanceController @Autowired constructor(private val performanceReposi
                 dateOfEnd,
                 authorId,
                 authorCountryId,
-                centuryOfPlayWriting
+                centuryOfPlayWriting,
+                isUpcoming
             )
         )
     }

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import ru.nsu.fit.sckwo.model.entitiies.Actor
+import ru.nsu.fit.sckwo.model.entities.Actor
 import ru.nsu.fit.sckwo.repositories.ActorRepository
 
 @Controller

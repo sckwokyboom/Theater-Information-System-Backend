@@ -2,7 +2,7 @@ package ru.nsu.fit.sckwo.repositories
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.nsu.fit.sckwo.model.entitiies.Casting
+import ru.nsu.fit.sckwo.model.entities.Casting
 import ru.nsu.fit.sckwo.model.mappers.CastingRowMapper
 import ru.nsu.fit.sckwo.utils.SqlQueryBuilder
 

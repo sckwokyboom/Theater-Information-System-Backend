@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS actors
     artist_id      INTEGER         NOT NULL
         CONSTRAINT actors_artist_id_fk
             REFERENCES artists,
-    voice          VOICE_TYPE      NOT NULL,
+    voice          VOICE      NOT NULL,
     weight         INTEGER         NOT NULL
         CONSTRAINT weight_check
             CHECK (weight > 0),
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS actors
             CHECK (height > 0),
     hair_color     VARCHAR         NOT NULL,
     eye_color      VARCHAR         NOT NULL,
-    skin_color     SKIN_COLOR_TYPE NOT NULL,
+    skin_color     SKIN_COLOR NOT NULL,
     nationality_id INTEGER         NOT NULL
         CONSTRAINT actors_nationality_id_fk
             REFERENCES nationalities

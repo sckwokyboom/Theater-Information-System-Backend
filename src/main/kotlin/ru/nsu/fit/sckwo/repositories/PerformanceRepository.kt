@@ -2,7 +2,7 @@ package ru.nsu.fit.sckwo.repositories
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.nsu.fit.sckwo.model.entitiies.Performance
+import ru.nsu.fit.sckwo.model.entities.Performance
 import ru.nsu.fit.sckwo.model.mappers.PerformanceRowMapper
 import ru.nsu.fit.sckwo.utils.SqlQueryBuilder
 
@@ -17,6 +17,7 @@ class PerformanceRepository(private val jdbcTemplate: JdbcTemplate) {
         authorId: Int?,
         authorCountryId: Int?,
         centuryOfPlayWriting: Int?,
+        isUpcoming: Boolean?,
     ): List<Performance> {
         var sqlQueryBuilder = SqlQueryBuilder()
             .select(
@@ -26,7 +27,8 @@ class PerformanceRepository(private val jdbcTemplate: JdbcTemplate) {
                         "plays.century, " +
                         "authors.first_name author_first_name, " +
                         "authors.second_name author_second_name, " +
-                        "performances.date, " +
+                        "performances.start_time, " +
+                        "performances.end_time, " +
                         "halls.title hall_title, " +
                         "performances.age_category, " +
                         "performances.base_price, " +
@@ -58,10 +60,10 @@ class PerformanceRepository(private val jdbcTemplate: JdbcTemplate) {
                 .where("is_premiere = $isPremiere")
         }
         if (dateOfStart != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("performances.date >= \'$dateOfStart\'")
+            sqlQueryBuilder = sqlQueryBuilder.where("performances.start_time >= \'$dateOfStart\'")
         }
         if (dateOfEnd != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("performances.date <= \'$dateOfEnd\'")
+            sqlQueryBuilder = sqlQueryBuilder.where("performances.end_time <= \'$dateOfEnd\'")
         }
         if (authorId != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("authors_plays.author_id = $authorId")
@@ -71,6 +73,11 @@ class PerformanceRepository(private val jdbcTemplate: JdbcTemplate) {
         }
         if (authorCountryId != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("authors.country_of_origin_id = $authorCountryId")
+        }
+        if (isUpcoming != null) {
+            if (isUpcoming) {
+                sqlQueryBuilder = sqlQueryBuilder.where("performances.start_time >= CURRENT_DATE")
+            }
         }
         return jdbcTemplate.query(sqlQueryBuilder.build(), PerformanceRowMapper())
     }

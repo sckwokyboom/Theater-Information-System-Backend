@@ -1,18 +1,32 @@
 version: '3.8'
 
-name: theater_information_system
-
 services:
   postgres:
     container_name: theater_db
-    image: postgres:16.3
+    image: postgres:latest
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: sver25MD
       POSTGRES_DB: theater_information_system
-#      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
-    volumes:
-      - ../src/main/resources/db:/docker-entrypoint-initdb.d
     restart: always
+    networks:
+      - network
+
+#  liquibase:
+#    image: liquibase/liquibase:latest
+#    container_name: liquibase
+#    depends_on:
+#      - postgres
+#    entrypoint: [ "sh", "-c", "apk add --no-cache postgresql-client && until pg_isready -h postgres -p 5432 -U postgres; do sleep 1; done; liquibase --defaultsFile=/liquibase/liquibase.properties update" ]
+#    environment:
+#      LIQUIBASE_PROPERTIES_FILE: /liquibase/liquibase.properties
+#    volumes:
+#      - ./liquibase:/liquibase/changelog
+#    networks:
+#      - network
+
+networks:
+  network:
+    driver: bridge

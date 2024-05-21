@@ -24,6 +24,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.springframework.boot:spring-boot-devtools")
+    implementation("org.liquibase:liquibase-core")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
     implementation("org.postgresql:postgresql")

@@ -2,8 +2,8 @@ package ru.nsu.fit.sckwo.repositories
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.nsu.fit.sckwo.model.entitiies.Sum
-import ru.nsu.fit.sckwo.model.entitiies.Ticket
+import ru.nsu.fit.sckwo.model.entities.Sum
+import ru.nsu.fit.sckwo.model.entities.Ticket
 import ru.nsu.fit.sckwo.model.mappers.SumRowMapper
 import ru.nsu.fit.sckwo.model.mappers.TicketRowMapper
 import ru.nsu.fit.sckwo.utils.SqlQueryBuilder

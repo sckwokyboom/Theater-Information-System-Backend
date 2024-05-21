@@ -1,6 +1,6 @@
-package ru.nsu.fit.sckwo.model.entitiies
+package ru.nsu.fit.sckwo.model.entities
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
 data class Performance(
     val id: Int,
@@ -9,7 +9,8 @@ data class Performance(
     val authorFirstName: String?,
     val authorSecondName: String?,
     val centuryOfPlayWriting: Int,
-    val date: LocalDate,
+    val startTime: LocalDateTime,
+    val endTime: LocalDateTime,
     val hallTitle: String,
     val ageCategory: String,
     val basePrice: Double,

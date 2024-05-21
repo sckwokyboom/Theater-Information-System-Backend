@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS subscriptions
             CHECK (price >= (0)::NUMERIC)
 );
 
-COMMENT ON TABLE subscriptions IS 'Подписки на билеты.';
+COMMENT ON TABLE subscriptions IS 'Абонемент с билетами.';
 
 COMMENT ON COLUMN subscriptions.id IS 'Идентификатор подписки.';
 

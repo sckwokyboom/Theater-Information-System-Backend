@@ -7,9 +7,9 @@ CREATE TABLE IF NOT EXISTS roles
     weight         INTEGER,
     height         INTEGER,
     eye_color      VARCHAR(100),
-    skin_color     SKIN_COLOR_TYPE,
-    hair_color     HAIR_COLOR_TYPE,
-    voice_type     VOICE_TYPE,
+    skin_color     SKIN_COLOR,
+    hair_color     HAIR_COLOR,
+    voice_type     VOICE,
     gender         GENDER,
     age            INTEGER
         CONSTRAINT check_age_not_negative

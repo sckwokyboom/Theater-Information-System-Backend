@@ -1,7 +1,7 @@
 package ru.nsu.fit.sckwo.model.mappers
 
 import org.springframework.jdbc.core.RowMapper
-import ru.nsu.fit.sckwo.model.entitiies.Repertoire
+import ru.nsu.fit.sckwo.model.entities.Repertoire
 import java.sql.ResultSet
 
 class RepertoireRowMapper : RowMapper<Repertoire> {

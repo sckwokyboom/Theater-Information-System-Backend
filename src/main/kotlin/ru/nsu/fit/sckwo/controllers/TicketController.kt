@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
-import ru.nsu.fit.sckwo.model.entitiies.Sum
-import ru.nsu.fit.sckwo.model.entitiies.Ticket
+import ru.nsu.fit.sckwo.model.entities.Sum
+import ru.nsu.fit.sckwo.model.entities.Ticket
 import ru.nsu.fit.sckwo.repositories.TicketRepository
 
 @Controller

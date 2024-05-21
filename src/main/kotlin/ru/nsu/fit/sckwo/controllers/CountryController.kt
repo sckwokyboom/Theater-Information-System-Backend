@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
-import ru.nsu.fit.sckwo.model.entitiies.Country
+import ru.nsu.fit.sckwo.model.entities.Country
 import ru.nsu.fit.sckwo.repositories.CountryRepository
 
 @Controller

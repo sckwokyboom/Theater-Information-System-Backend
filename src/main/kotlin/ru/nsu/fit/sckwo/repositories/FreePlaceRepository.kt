@@ -2,7 +2,7 @@ package ru.nsu.fit.sckwo.repositories
 
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.stereotype.Repository
-import ru.nsu.fit.sckwo.model.entitiies.FreePlace
+import ru.nsu.fit.sckwo.model.entities.FreePlace
 import ru.nsu.fit.sckwo.model.mappers.FreePlaceRowMapper
 import ru.nsu.fit.sckwo.utils.SqlQueryBuilder
 
@@ -25,14 +25,14 @@ class FreePlaceRepository(private val jdbcTemplate: JdbcTemplate) {
         isUpcomingPerformances: String?,
     ): List<FreePlace> {
         var sqlQueryBuilder = SqlQueryBuilder()
-            .select("places.id, halls.title, places.price_coefficient, performances.id")
+            .select("places.id, halls.title hall_title, places.price_coefficient price_coefficient, performances.id performance_id")
             .from("performances")
             .leftJoin("places")
-            .on("ON places.hall_id = performances.hall_id")
+            .on("places.hall_id = performances.hall_id")
             .leftJoin("tickets")
             .on("tickets.place_id = places.id AND tickets.performance_id = performances.id")
             .leftJoin("halls")
-            .on("places.hall_id = hall.id")
+            .on("places.hall_id = halls.id")
             .where("tickets.performance_id IS NULL")
 
         if (isUpcomingPerformances != null) {

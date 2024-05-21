@@ -1,7 +1,7 @@
 package ru.nsu.fit.sckwo.model.mappers
 
 import org.springframework.jdbc.core.RowMapper
-import ru.nsu.fit.sckwo.model.entitiies.Performance
+import ru.nsu.fit.sckwo.model.entities.Performance
 import java.sql.ResultSet
 
 class PerformanceRowMapper : RowMapper<Performance> {
@@ -13,7 +13,8 @@ class PerformanceRowMapper : RowMapper<Performance> {
             rs.getString("author_first_name"),
             rs.getString("author_second_name"),
             rs.getInt("century"),
-            rs.getDate("date").toLocalDate(),
+            rs.getTimestamp("start_time").toLocalDateTime(),
+            rs.getTimestamp("end_time").toLocalDateTime(),
             rs.getString("hall_title"),
             rs.getString("age_category"),
             rs.getDouble("base_price"),

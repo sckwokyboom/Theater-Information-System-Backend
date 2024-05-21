@@ -28,7 +28,8 @@ BEGIN
     INTO overlapping_count
     FROM repertoires_performances rp
              JOIN performances p1 ON rp.performance_id = p1.id
-             JOIN performances p2 ON p1.date = p2.date;
+             JOIN performances p2
+                  ON ((p1.start_time, p1.end_time) OVERLAPS (p2.start_time, p2.end_time));
 
     -- Если найдено хотя бы одно пересечение дат, кидаем исключение
     IF overlapping_count > 0 THEN

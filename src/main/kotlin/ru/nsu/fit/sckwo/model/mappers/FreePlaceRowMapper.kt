@@ -1,7 +1,7 @@
 package ru.nsu.fit.sckwo.model.mappers
 
 import org.springframework.jdbc.core.RowMapper
-import ru.nsu.fit.sckwo.model.entitiies.FreePlace
+import ru.nsu.fit.sckwo.model.entities.FreePlace
 import java.sql.ResultSet
 
 class FreePlaceRowMapper : RowMapper<FreePlace> {

@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import ru.nsu.fit.sckwo.model.entitiies.Employee
+import ru.nsu.fit.sckwo.model.entities.Employee
 import ru.nsu.fit.sckwo.repositories.EmployeeRepository
 import ru.nsu.fit.sckwo.repositories.EmployeeType
 

@@ -9,9 +9,10 @@ CREATE TABLE IF NOT EXISTS performances
     play_id      INTEGER                                                 NOT NULL
         CONSTRAINT perfomances_plays_id_fk
             REFERENCES plays,
-    date         DATE                                                    NOT NULL,
+    start_time   TIMESTAMP                                               NOT NULL,
+    end_time     TIMESTAMP                                               NOT NULL,
     hall_id      INTEGER                                                 NOT NULL,
-    age_category AGE_CATEGORY_TYPE,
+    age_category AGE_CATEGORY,
     base_price   NUMERIC(10, 2)                                          NOT NULL,
     is_premiere  BOOLEAN                                                 NOT NULL
 );
@@ -22,11 +23,13 @@ COMMENT ON COLUMN performances.id IS 'Идентификатор спектак�
 
 COMMENT ON COLUMN performances.play_id IS 'Идентификатор пьесы, по которой поставлен спектакль.';
 
-COMMENT ON COLUMN performances.date IS 'Дата проведения спектакля.';
+COMMENT ON COLUMN performances.start_time IS 'Дата и время начала спектакля.';
+
+COMMENT ON COLUMN performances.end_time IS 'Дата и время окончания спектакля.';
 
 COMMENT ON COLUMN performances.hall_id IS 'Индекс зала, в котором проводится спектакль. ';
 
-COMMENT ON COLUMN performances.age_category IS 'Возрастна категория спектакля.';
+COMMENT ON COLUMN performances.age_category IS 'Возрастная категория спектакля.';
 
 COMMENT ON COLUMN performances.base_price IS 'Базовая цена за билет на спектакль в рублях.';
 
@@ -44,7 +47,7 @@ BEGIN
     SELECT COUNT(*)
     INTO performance_count
     FROM performances
-    WHERE date = new.date
+    WHERE ((new.start_time, new.end_time) OVERLAPS (start_time, end_time))
       AND hall_id = new.hall_id;
 
     -- Если найдено хотя бы одно представление, кидаем исключение
@@ -70,7 +73,7 @@ ALTER SEQUENCE perfomances_id_seq OWNED BY performances.id;
 CREATE OR REPLACE FUNCTION check_performance_date() RETURNS TRIGGER AS
 $$
 BEGIN
-    IF new.date < CURRENT_DATE THEN
+    IF new.start_time < CURRENT_TIMESTAMP THEN
         RAISE EXCEPTION 'The performance date cannot be in the past';
     END IF;
     RETURN new;

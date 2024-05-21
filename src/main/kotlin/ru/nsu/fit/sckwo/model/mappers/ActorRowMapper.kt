@@ -1,7 +1,7 @@
 package ru.nsu.fit.sckwo.model.mappers
 
 import org.springframework.jdbc.core.RowMapper
-import ru.nsu.fit.sckwo.model.entitiies.Actor
+import ru.nsu.fit.sckwo.model.entities.Actor
 import java.sql.ResultSet
 
 class ActorRowMapper : RowMapper<Actor> {
