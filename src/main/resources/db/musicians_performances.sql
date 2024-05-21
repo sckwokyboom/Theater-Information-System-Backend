@@ -1,21 +1,17 @@
-create table if not exists musicians_performances
+CREATE TABLE IF NOT EXISTS musicians_performances
 (
-    musician_id integer not null
-        constraint musicians_performances___fk
-            references musicians,
-    performance integer not null
-        constraint musicians_performances_perfomances_id_fk
-            references performances,
-    constraint musicians_performances_pk
-        primary key (musician_id, performance)
+    musician_id INTEGER NOT NULL
+        CONSTRAINT musicians_performances___fk
+            REFERENCES musicians,
+    performance INTEGER NOT NULL
+        CONSTRAINT musicians_performances_perfomances_id_fk
+            REFERENCES performances,
+    CONSTRAINT musicians_performances_pk
+        PRIMARY KEY (musician_id, performance)
 );
 
-comment on table musicians_performances is 'Музыканты и представления.';
+COMMENT ON TABLE musicians_performances IS 'Музыканты и представления.';
 
-comment on column musicians_performances.musician_id is 'Идентификатор музыканта.';
+COMMENT ON COLUMN musicians_performances.musician_id IS 'Идентификатор музыканта.';
 
-comment on column musicians_performances.performance is 'Идентификатор представления.';
-
-alter table musicians_performances
-    owner to postgres;
-
+COMMENT ON COLUMN musicians_performances.performance IS 'Идентификатор представления.';

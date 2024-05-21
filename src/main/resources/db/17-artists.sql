@@ -1,27 +1,23 @@
-create sequence if not exists artist_id_seq
-    as integer;
+CREATE SEQUENCE IF NOT EXISTS artist_id_seq
+    AS INTEGER;
 
-alter sequence artist_id_seq owner to postgres;
+ALTER SEQUENCE artist_id_seq OWNER TO postgres;
 
-create table if not exists artists
+CREATE TABLE IF NOT EXISTS artists
 (
-    id          integer default nextval('artist_id_seq'::regclass) not null
-        constraint artist_pk
-            primary key,
-    employee_id integer                                            not null
-        constraint artist_employee_id_fk
-            references employees
+    id          INTEGER DEFAULT NEXTVAL('artist_id_seq'::REGCLASS) NOT NULL
+        CONSTRAINT artist_pk
+            PRIMARY KEY,
+    employee_id INTEGER                                            NOT NULL
+        CONSTRAINT artist_employee_id_fk
+            REFERENCES employees
 );
 
-comment on table artists is 'Артисты.';
+COMMENT ON TABLE artists IS 'Артисты.';
 
-comment on column artists.id is 'Идентификатор.';
+COMMENT ON COLUMN artists.id IS 'Идентификатор.';
 
-comment on column artists.employee_id is 'Идентификатор артиста как работника театра.';
+COMMENT ON COLUMN artists.employee_id IS 'Идентификатор артиста как работника театра.';
 
-alter table artists
-    owner to postgres;
-
-
-alter sequence artist_id_seq owned by artists.id;
+ALTER SEQUENCE artist_id_seq OWNED BY artists.id;
 

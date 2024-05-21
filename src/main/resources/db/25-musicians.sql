@@ -1,19 +1,15 @@
-create table if not exists musicians
+CREATE TABLE IF NOT EXISTS musicians
 (
-    id        serial
-        constraint musicians_pk
-            primary key,
-    artist_id integer not null
-        constraint musicians_artist_id_fk
-            references artists
+    id        SERIAL
+        CONSTRAINT musicians_pk
+            PRIMARY KEY,
+    artist_id INTEGER NOT NULL
+        CONSTRAINT musicians_artist_id_fk
+            REFERENCES artists
 );
 
-comment on table musicians is 'Музыканты.';
+COMMENT ON TABLE musicians IS 'Музыканты.';
 
-comment on column musicians.id is 'Идентификатор музыканта.';
+COMMENT ON COLUMN musicians.id IS 'Идентификатор музыканта.';
 
-comment on column musicians.artist_id is 'Идентификатор музыканта как артиста.';
-
-alter table musicians
-    owner to postgres;
-
+COMMENT ON COLUMN musicians.artist_id IS 'Идентификатор музыканта как артиста.';

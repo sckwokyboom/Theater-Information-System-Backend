@@ -1,43 +1,39 @@
-create table if not exists tours
+CREATE TABLE IF NOT EXISTS tours
 (
-    id                      serial
-        constraint tours_pk
-            primary key,
-    play_id                 integer not null
-        constraint tours_plays_id_fk
-            references plays,
-    date_of_start           date    not null,
-    date_of_end             date    not null,
-    tour_theater_id         integer not null
-        constraint tours_theater_id_fk
-            references theaters,
-    organization_theater_id integer not null
-        constraint tours_theater_id_fk_2
-            references theaters,
-    constraint check_theaters_not_equals
-        check (tour_theater_id <> organization_theater_id),
-    constraint check_date_of_start_before_date_of_end
-        check (date_of_start <= date_of_end)
+    id                      SERIAL
+        CONSTRAINT tours_pk
+            PRIMARY KEY,
+    play_id                 INTEGER NOT NULL
+        CONSTRAINT tours_plays_id_fk
+            REFERENCES plays,
+    date_of_start           DATE    NOT NULL,
+    date_of_end             DATE    NOT NULL,
+    tour_theater_id         INTEGER NOT NULL
+        CONSTRAINT tours_theater_id_fk
+            REFERENCES theaters,
+    organization_theater_id INTEGER NOT NULL
+        CONSTRAINT tours_theater_id_fk_2
+            REFERENCES theaters,
+    CONSTRAINT check_theaters_not_equals
+        CHECK (tour_theater_id <> organization_theater_id),
+    CONSTRAINT check_date_of_start_before_date_of_end
+        CHECK (date_of_start <= date_of_end)
 );
 
-comment on table tours is 'Гастрольные туры.';
+COMMENT ON TABLE tours IS 'Гастрольные туры.';
 
-comment on column tours.id is 'Индекс гастрольного тура.';
+COMMENT ON COLUMN tours.id IS 'Индекс гастрольного тура.';
 
-comment on column tours.play_id is 'Пьеса, с которой совершается гастрольный тур.';
+COMMENT ON COLUMN tours.play_id IS 'Пьеса, с которой совершается гастрольный тур.';
 
-comment on column tours.date_of_start is 'Дата начала гастрольного тура (включительно).';
+COMMENT ON COLUMN tours.date_of_start IS 'Дата начала гастрольного тура (включительно).';
 
-comment on column tours.date_of_end is 'Дата конца гастрольного тура (включительно).';
+COMMENT ON COLUMN tours.date_of_end IS 'Дата конца гастрольного тура (включительно).';
 
-comment on column tours.tour_theater_id is 'Театр, в который совершается гастрольный тур.';
+COMMENT ON COLUMN tours.tour_theater_id IS 'Театр, в который совершается гастрольный тур.';
 
-comment on column tours.organization_theater_id is 'Театр, от которого производится гастрольный тур.';
+COMMENT ON COLUMN tours.organization_theater_id IS 'Театр, от которого производится гастрольный тур.';
 
-comment on constraint check_theaters_not_equals on tours is 'Проверить, что театр-организатор гастрольного тура не совпадает с театром, в который этот гастрольный тур совершается.';
+COMMENT ON CONSTRAINT check_theaters_not_equals ON tours IS 'Проверить, что театр-организатор гастрольного тура не совпадает с театром, в который этот гастрольный тур совершается.';
 
-comment on constraint check_date_of_start_before_date_of_end on tours is 'Проверить, что дата начала гастрольного тура раньше конца гастрольного тура (или совпадает с ней).';
-
-alter table tours
-    owner to postgres;
-
+COMMENT ON CONSTRAINT check_date_of_start_before_date_of_end ON tours IS 'Проверить, что дата начала гастрольного тура раньше конца гастрольного тура (или совпадает с ней).';

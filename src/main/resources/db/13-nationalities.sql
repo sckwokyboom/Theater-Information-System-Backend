@@ -1,13 +1,13 @@
-create table if not exists nationalities
+CREATE TABLE IF NOT EXISTS nationalities
 (
-    id   serial
-        constraint nationalities_pk
-            primary key,
-    name varchar(200) not null
+    id   SERIAL
+        CONSTRAINT nationalities_pk
+            PRIMARY KEY,
+    name VARCHAR(200) NOT NULL
 );
 
-comment on table nationalities is 'Национальности.';
+COMMENT ON TABLE nationalities IS 'Национальности.';
 
-comment on column nationalities.id is 'Идентификатор.';
+COMMENT ON COLUMN nationalities.id IS 'Идентификатор.';
 
-comment on column nationalities.name is 'Название.';
+COMMENT ON COLUMN nationalities.name IS 'Название.';

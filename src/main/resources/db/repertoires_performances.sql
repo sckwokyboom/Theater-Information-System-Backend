@@ -1,27 +1,24 @@
-create table if not exists repertoires_performances
+CREATE TABLE IF NOT EXISTS repertoires_performances
 (
-    performance_id integer not null
-        constraint repertoires_performances_perfomances_id_fk
-            references performances,
-    repertoire_id  integer not null
-        constraint repertoires_performances_repertoires_id_fk
-            references repertoires,
-    constraint repertoires_performances_pk
-        primary key (performance_id, repertoire_id)
+    performance_id INTEGER NOT NULL
+        CONSTRAINT repertoires_performances_perfomances_id_fk
+            REFERENCES performances,
+    repertoire_id  INTEGER NOT NULL
+        CONSTRAINT repertoires_performances_repertoires_id_fk
+            REFERENCES repertoires,
+    CONSTRAINT repertoires_performances_pk
+        PRIMARY KEY (performance_id, repertoire_id)
 );
 
-comment on table repertoires_performances is 'Репертуары и представления.';
+COMMENT ON TABLE repertoires_performances IS 'Репертуары и представления.';
 
-comment on column repertoires_performances.performance_id is 'Идентификатор представления.';
+COMMENT ON COLUMN repertoires_performances.performance_id IS 'Идентификатор представления.';
 
-comment on column repertoires_performances.repertoire_id is 'Идентификатор репертура.';
+COMMENT ON COLUMN repertoires_performances.repertoire_id IS 'Идентификатор репертура.';
 
-alter table repertoires_performances
-    owner to postgres;
-
-create or replace function public.check_repertoire_dates() returns trigger
-    language plpgsql
-as
+CREATE OR REPLACE FUNCTION public.check_repertoire_dates() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
 $$
 DECLARE
     overlapping_count INTEGER;
@@ -39,17 +36,17 @@ BEGIN
     END IF;
 
     -- Если проверка пройдена успешно, возвращаем NEW
-    RETURN NEW;
+    RETURN new;
 END;
 $$;
 
-alter function public.check_repertoire_dates() owner to postgres;
+ALTER FUNCTION public.check_repertoire_dates() OWNER TO postgres;
 
 
 
-create trigger check_repertoire_dates_trigger
-    before insert
-    on repertoires_performances
-    for each row
-execute procedure public.check_repertoire_dates();
+CREATE TRIGGER check_repertoire_dates_trigger
+    BEFORE INSERT
+    ON repertoires_performances
+    FOR EACH ROW
+EXECUTE PROCEDURE public.check_repertoire_dates();
 

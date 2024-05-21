@@ -1,21 +1,17 @@
-create table if not exists artists_tours
+CREATE TABLE IF NOT EXISTS artists_tours
 (
-    artist_id integer not null
-        constraint artists_tours_artist_id_fk
-            references artists,
-    tour_id   integer not null
-        constraint artists_tours_tours_id_fk
-            references tours,
-    constraint artists_tours_pk
-        primary key (tour_id, artist_id)
+    artist_id INTEGER NOT NULL
+        CONSTRAINT artists_tours_artist_id_fk
+            REFERENCES artists,
+    tour_id   INTEGER NOT NULL
+        CONSTRAINT artists_tours_tours_id_fk
+            REFERENCES tours,
+    CONSTRAINT artists_tours_pk
+        PRIMARY KEY (tour_id, artist_id)
 );
 
-comment on table artists_tours is 'Артисты и гастрольные туры.';
+COMMENT ON TABLE artists_tours IS 'Артисты и гастрольные туры.';
 
-comment on column artists_tours.artist_id is 'Идентификатор артиста.';
+COMMENT ON COLUMN artists_tours.artist_id IS 'Идентификатор артиста.';
 
-comment on column artists_tours.tour_id is 'Идентификатор гастрольного тура.';
-
-alter table artists_tours
-    owner to postgres;
-
+COMMENT ON COLUMN artists_tours.tour_id IS 'Идентификатор гастрольного тура.';

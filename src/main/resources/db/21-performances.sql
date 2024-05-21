@@ -1,46 +1,41 @@
-create sequence if not exists perfomances_id_seq
-    as integer;
+CREATE SEQUENCE IF NOT EXISTS perfomances_id_seq
+    AS INTEGER;
 
-alter sequence perfomances_id_seq owner to postgres;
-
-create table if not exists performances
+CREATE TABLE IF NOT EXISTS performances
 (
-    id           integer default nextval('perfomances_id_seq'::regclass) not null
-        constraint perfomances_pk
-            primary key,
-    play_id      integer                                                 not null
-        constraint perfomances_plays_id_fk
-            references plays,
-    date         date                                                    not null,
-    hall_id      integer                                                 not null,
-    age_category age_category_type,
-    base_price   numeric(10, 2)                                          not null,
-    is_premiere  boolean                                                 not null
+    id           INTEGER DEFAULT NEXTVAL('perfomances_id_seq'::REGCLASS) NOT NULL
+        CONSTRAINT perfomances_pk
+            PRIMARY KEY,
+    play_id      INTEGER                                                 NOT NULL
+        CONSTRAINT perfomances_plays_id_fk
+            REFERENCES plays,
+    date         DATE                                                    NOT NULL,
+    hall_id      INTEGER                                                 NOT NULL,
+    age_category AGE_CATEGORY_TYPE,
+    base_price   NUMERIC(10, 2)                                          NOT NULL,
+    is_premiere  BOOLEAN                                                 NOT NULL
 );
 
-comment on table performances is 'Спектакли.';
+COMMENT ON TABLE performances IS 'Спектакли.';
 
-comment on column performances.id is 'Идентификатор спектакля.';
+COMMENT ON COLUMN performances.id IS 'Идентификатор спектакля.';
 
-comment on column performances.play_id is 'Идентификатор пьесы, по которой поставлен спектакль.';
+COMMENT ON COLUMN performances.play_id IS 'Идентификатор пьесы, по которой поставлен спектакль.';
 
-comment on column performances.date is 'Дата проведения спектакля.';
+COMMENT ON COLUMN performances.date IS 'Дата проведения спектакля.';
 
-comment on column performances.hall_id is 'Индекс зала, в котором проводится спектакль. ';
+COMMENT ON COLUMN performances.hall_id IS 'Индекс зала, в котором проводится спектакль. ';
 
-comment on column performances.age_category is 'Возрастна категория спектакля.';
+COMMENT ON COLUMN performances.age_category IS 'Возрастна категория спектакля.';
 
-comment on column performances.base_price is 'Базовая цена за билет на спектакль в рублях.';
+COMMENT ON COLUMN performances.base_price IS 'Базовая цена за билет на спектакль в рублях.';
 
-comment on column performances.is_premiere is 'Является ли данный спектакль премьерой.';
-
-alter table performances
-    owner to postgres;
+COMMENT ON COLUMN performances.is_premiere IS 'Является ли данный спектакль премьерой.';
 
 
-create or replace function public.check_performance_date() returns trigger
-    language plpgsql
-as
+CREATE OR REPLACE FUNCTION public.check_performance_date() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
 $$
 DECLARE
     performance_count INTEGER;
@@ -49,8 +44,8 @@ BEGIN
     SELECT COUNT(*)
     INTO performance_count
     FROM performances
-    WHERE date = NEW.date
-      AND hall_id = NEW.hall_id;
+    WHERE date = new.date
+      AND hall_id = new.hall_id;
 
     -- Если найдено хотя бы одно представление, кидаем исключение
     IF performance_count > 0 THEN
@@ -58,34 +53,34 @@ BEGIN
     END IF;
 
     -- Если проверка пройдена успешно, возвращаем NEW
-    RETURN NEW;
+    RETURN new;
 END;
 $$;
 
-alter function public.check_performance_date() owner to postgres;
-
-
-create trigger check_performance_date_trigger
-    before insert
-    on performances
-    for each row
-execute procedure public.check_performance_date();
+CREATE TRIGGER check_performance_date_trigger
+    BEFORE INSERT
+    ON performances
+    FOR EACH ROW
+EXECUTE PROCEDURE public.check_performance_date();
 
 
 
-alter sequence perfomances_id_seq owned by performances.id;
+ALTER SEQUENCE perfomances_id_seq OWNED BY performances.id;
 
-CREATE OR REPLACE FUNCTION check_performance_date() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION check_performance_date() RETURNS TRIGGER AS
+$$
 BEGIN
-    IF NEW.date < CURRENT_DATE THEN
+    IF new.date < CURRENT_DATE THEN
         RAISE EXCEPTION 'The performance date cannot be in the past';
     END IF;
-    RETURN NEW;
+    RETURN new;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_check_performance_date
-    BEFORE INSERT ON performances
-    FOR EACH ROW EXECUTE FUNCTION check_performance_date();
+    BEFORE INSERT
+    ON performances
+    FOR EACH ROW
+EXECUTE FUNCTION check_performance_date();
 
 

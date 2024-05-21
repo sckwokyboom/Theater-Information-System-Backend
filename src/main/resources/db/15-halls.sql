@@ -1,20 +1,16 @@
-create table if not exists halls
+CREATE TABLE IF NOT EXISTS halls
 (
-    id              serial
-        constraint halls_pk
-            primary key,
-    title           varchar(100) not null,
-    number_of_seats integer      not null
-        constraint number_of_seats_check
-            check (number_of_seats > 0)
+    id              SERIAL
+        CONSTRAINT halls_pk
+            PRIMARY KEY,
+    title           VARCHAR(100) NOT NULL,
+    number_of_seats INTEGER      NOT NULL
+        CONSTRAINT number_of_seats_check
+            CHECK (number_of_seats > 0)
 );
 
-comment on table halls is 'Залы в театре.';
+COMMENT ON TABLE halls IS 'Залы в театре.';
 
-comment on column halls.id is 'Идентификатор зала.';
+COMMENT ON COLUMN halls.id IS 'Идентификатор зала.';
 
-comment on column halls.number_of_seats is 'Количество мест в зале.';
-
-alter table halls
-    owner to postgres;
-
+COMMENT ON COLUMN halls.number_of_seats IS 'Количество мест в зале.';

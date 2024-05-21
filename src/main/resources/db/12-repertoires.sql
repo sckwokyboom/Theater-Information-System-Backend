@@ -1,22 +1,18 @@
-create table if not exists repertoires
+CREATE TABLE IF NOT EXISTS repertoires
 (
-    id              serial
-        constraint repertoires_pk
-            primary key,
-    start_of_season date not null,
-    end_of_season   date not null,
-    constraint season_date_check
-        check (start_of_season < end_of_season)
+    id              SERIAL
+        CONSTRAINT repertoires_pk
+            PRIMARY KEY,
+    start_of_season DATE NOT NULL,
+    end_of_season   DATE NOT NULL,
+    CONSTRAINT season_date_check
+        CHECK (start_of_season < end_of_season)
 );
 
-comment on table repertoires is 'Репертуары театра.';
+COMMENT ON TABLE repertoires IS 'Репертуары театра.';
 
-comment on column repertoires.id is 'Идентификатор репертуара.';
+COMMENT ON COLUMN repertoires.id IS 'Идентификатор репертуара.';
 
-comment on column repertoires.start_of_season is 'Дата начала сезона (включительно).';
+COMMENT ON COLUMN repertoires.start_of_season IS 'Дата начала сезона (включительно).';
 
-comment on column repertoires.end_of_season is 'Дата конца сезона (включительно).';
-
-alter table repertoires
-    owner to postgres;
-
+COMMENT ON COLUMN repertoires.end_of_season IS 'Дата конца сезона (включительно).';

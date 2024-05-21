@@ -1,21 +1,17 @@
 CREATE TABLE IF NOT EXISTS genres
 (
     id
-        serial
-        constraint
+        SERIAL
+        CONSTRAINT
             genres_pk
-            primary
-                key,
+            PRIMARY
+                KEY,
     title
-        varchar(100) not null
+        VARCHAR(100) NOT NULL
 );
 
-comment on table genres is 'Жанры представлений.';
+COMMENT ON TABLE genres IS 'Жанры представлений.';
 
-comment on column genres.id is 'Идентификатор.';
+COMMENT ON COLUMN genres.id IS 'Идентификатор.';
 
-comment on column genres.title is 'Название.';
-
-alter table genres
-    owner to postgres;
-
+COMMENT ON COLUMN genres.title IS 'Название.';

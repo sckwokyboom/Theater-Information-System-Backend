@@ -1,67 +1,64 @@
-create sequence if not exists employee_id_seq
-    as integer;
+CREATE SEQUENCE IF NOT EXISTS employee_id_seq
+    AS INTEGER;
 
-alter sequence employee_id_seq owner to postgres;
+ALTER SEQUENCE employee_id_seq OWNER TO postgres;
 
-create sequence if not exists employee_theater_id_seq
-    as integer;
+CREATE SEQUENCE IF NOT EXISTS employee_theater_id_seq
+    AS INTEGER;
 
-alter sequence employee_theater_id_seq owner to postgres;
+ALTER SEQUENCE employee_theater_id_seq OWNER TO postgres;
 
-create table if not exists employees
+CREATE TABLE IF NOT EXISTS employees
 (
-    id                 integer default nextval('employee_id_seq'::regclass)         not null
-        constraint employee_pk
-            primary key,
-    theater_id         integer default nextval('employee_theater_id_seq'::regclass) not null
-        constraint employee_theater_id_fk
-            references theaters,
-    first_name         varchar(100)                                                 not null,
-    second_name        varchar(100)                                                 not null,
-    patronymic        varchar(100)                                                 not null,
-    date_of_birth      date                                                         not null,
-    gender             gender                                                       not null,
-    salary             integer                                                      not null
-        constraint check_salary
-            check (salary >= 0),
-    amount_of_children integer                                                      not null
-        constraint check_amount_of_children
-            check (amount_of_children >= 0),
-    date_of_employment date                                                         not null,
-    constraint check_date_of_employment_after_date_of_birth
-        check (date_of_birth < date_of_employment)
+    id                 INTEGER DEFAULT NEXTVAL('employee_id_seq'::REGCLASS)         NOT NULL
+        CONSTRAINT employee_pk
+            PRIMARY KEY,
+    theater_id         INTEGER DEFAULT NEXTVAL('employee_theater_id_seq'::REGCLASS) NOT NULL
+        CONSTRAINT employee_theater_id_fk
+            REFERENCES theaters,
+    first_name         VARCHAR(100)                                                 NOT NULL,
+    second_name        VARCHAR(100)                                                 NOT NULL,
+    patronymic         VARCHAR(100)                                                 NOT NULL,
+    date_of_birth      DATE                                                         NOT NULL,
+    gender             GENDER                                                       NOT NULL,
+    salary             INTEGER                                                      NOT NULL
+        CONSTRAINT check_salary
+            CHECK (salary >= 0),
+    amount_of_children INTEGER                                                      NOT NULL
+        CONSTRAINT check_amount_of_children
+            CHECK (amount_of_children >= 0),
+    date_of_employment DATE                                                         NOT NULL,
+    CONSTRAINT check_date_of_employment_after_date_of_birth
+        CHECK (date_of_birth < date_of_employment)
 );
 
 
 
-comment on table employees is 'Работники.';
+COMMENT ON TABLE employees IS 'Работники.';
 
-comment on column employees.id is 'Идентификатор работника.';
+COMMENT ON COLUMN employees.id IS 'Идентификатор работника.';
 
-comment on column employees.theater_id is 'Идентификатор театра, в котором трудоустроен работник.';
+COMMENT ON COLUMN employees.theater_id IS 'Идентификатор театра, в котором трудоустроен работник.';
 
-comment on column employees.first_name is 'Имя.';
+COMMENT ON COLUMN employees.first_name IS 'Имя.';
 
-comment on column employees.second_name is 'Фамилия.';
+COMMENT ON COLUMN employees.second_name IS 'Фамилия.';
 
-comment on column employees.patronymic is 'Отчество.';
+COMMENT ON COLUMN employees.patronymic IS 'Отчество.';
 
-comment on column employees.date_of_birth is 'Дата рождения.';
+COMMENT ON COLUMN employees.date_of_birth IS 'Дата рождения.';
 
-comment on column employees.gender is 'Пол.';
+COMMENT ON COLUMN employees.gender IS 'Пол.';
 
-comment on column employees.salary is 'Ежемесячная зарплата.';
+COMMENT ON COLUMN employees.salary IS 'Ежемесячная зарплата.';
 
-comment on column employees.amount_of_children is 'Количество детей.';
+COMMENT ON COLUMN employees.amount_of_children IS 'Количество детей.';
 
-comment on column employees.date_of_employment is 'Дата трудоустройства в театр.';
+COMMENT ON COLUMN employees.date_of_employment IS 'Дата трудоустройства в театр.';
 
-comment on constraint check_date_of_employment_after_date_of_birth on employees is 'Проверить, что дата трудоустройства произошла после даты рождения.';
+COMMENT ON CONSTRAINT check_date_of_employment_after_date_of_birth ON employees IS 'Проверить, что дата трудоустройства произошла после даты рождения.';
 
-alter table employees
-    owner to postgres;
+ALTER SEQUENCE employee_theater_id_seq OWNED BY employees.theater_id;
 
-alter sequence employee_theater_id_seq owned by employees.theater_id;
-
-alter sequence employee_id_seq owned by employees.id;
+ALTER SEQUENCE employee_id_seq OWNED BY employees.id;
 

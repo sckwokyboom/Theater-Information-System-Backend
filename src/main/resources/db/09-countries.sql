@@ -1,15 +1,11 @@
-create table if not exists countries
+CREATE TABLE IF NOT EXISTS countries
 (
-    id   serial
-        constraint countries_pk
-            primary key,
-    name varchar(200) not null
+    id   SERIAL
+        CONSTRAINT countries_pk
+            PRIMARY KEY,
+    name VARCHAR(200) NOT NULL
 );
 
-comment on column countries.id is 'Идентификатор.';
+COMMENT ON COLUMN countries.id IS 'Идентификатор.';
 
-comment on column countries.name is 'Название страны.';
-
-alter table countries
-    owner to postgres;
-
+COMMENT ON COLUMN countries.name IS 'Название страны.';

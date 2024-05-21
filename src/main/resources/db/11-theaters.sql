@@ -1,25 +1,22 @@
-create sequence if not exists theater_id_seq
-    as integer;
+CREATE SEQUENCE IF NOT EXISTS theater_id_seq
+    AS INTEGER;
 
-alter sequence theater_id_seq owner to postgres;
+ALTER SEQUENCE theater_id_seq OWNER TO postgres;
 
 
 
-create table if not exists theaters
+CREATE TABLE IF NOT EXISTS theaters
 (
-    name varchar(200)                                        not null,
-    id   integer default nextval('theater_id_seq'::regclass) not null
-        constraint id
-            primary key
+    name VARCHAR(200)                                        NOT NULL,
+    id   INTEGER DEFAULT NEXTVAL('theater_id_seq'::REGCLASS) NOT NULL
+        CONSTRAINT id
+            PRIMARY KEY
 );
 
-comment on table theaters is 'Театры.';
+COMMENT ON TABLE theaters IS 'Театры.';
 
-comment on column theaters.name is 'Название театра.';
+COMMENT ON COLUMN theaters.name IS 'Название театра.';
 
-comment on column theaters.id is 'Идентификатор театра.';
+COMMENT ON COLUMN theaters.id IS 'Идентификатор театра.';
 
-alter table theaters
-    owner to postgres;
-
-alter sequence theater_id_seq owned by theaters.id;
+ALTER SEQUENCE theater_id_seq OWNED BY theaters.id;

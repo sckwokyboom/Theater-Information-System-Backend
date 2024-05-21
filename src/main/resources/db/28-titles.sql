@@ -1,22 +1,18 @@
-create table if not exists titles
+CREATE TABLE IF NOT EXISTS titles
 (
-    id             serial
-        constraint titles_pk
-            primary key,
-    competition_id integer      not null
-        constraint titles_competitions_id_fk
-            references competitions,
-    name           varchar(200) not null
+    id             SERIAL
+        CONSTRAINT titles_pk
+            PRIMARY KEY,
+    competition_id INTEGER      NOT NULL
+        CONSTRAINT titles_competitions_id_fk
+            REFERENCES competitions,
+    name           VARCHAR(200) NOT NULL
 );
 
-comment on table titles is 'Звания актёров.';
+COMMENT ON TABLE titles IS 'Звания актёров.';
 
-comment on column titles.id is 'Идентификатор звания.';
+COMMENT ON COLUMN titles.id IS 'Идентификатор звания.';
 
-comment on column titles.competition_id is 'Идентификатор соревнования, за которое было получено звание.';
+COMMENT ON COLUMN titles.competition_id IS 'Идентификатор соревнования, за которое было получено звание.';
 
-comment on column titles.name is 'Название звания.';
-
-alter table titles
-    owner to postgres;
-
+COMMENT ON COLUMN titles.name IS 'Название звания.';

@@ -1,19 +1,15 @@
-create table if not exists stage_conductors
+CREATE TABLE IF NOT EXISTS stage_conductors
 (
-    id          serial
-        constraint stage_conductors_pk
-            primary key,
-    director_id integer not null
-        constraint stage_conductors_directors_id_fk
-            references directors
+    id          SERIAL
+        CONSTRAINT stage_conductors_pk
+            PRIMARY KEY,
+    director_id INTEGER NOT NULL
+        CONSTRAINT stage_conductors_directors_id_fk
+            REFERENCES directors
 );
 
-comment on table stage_conductors is 'Дирижёры.';
+COMMENT ON TABLE stage_conductors IS 'Дирижёры.';
 
-comment on column stage_conductors.id is 'Идентификатор дирижёра.';
+COMMENT ON COLUMN stage_conductors.id IS 'Идентификатор дирижёра.';
 
-comment on column stage_conductors.director_id is 'Идентификатор дирижёра как директора.';
-
-alter table stage_conductors
-    owner to postgres;
-
+COMMENT ON COLUMN stage_conductors.director_id IS 'Идентификатор дирижёра как директора.';

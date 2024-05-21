@@ -1,27 +1,23 @@
-create table if not exists competitions
+CREATE TABLE IF NOT EXISTS competitions
 (
-    id            serial
-        constraint competitions_pk
-            primary key,
-    name          varchar(200) not null,
-    date_of_start date         not null,
-    date_of_end   date         not null,
-    constraint check_date_of_start_before_date_of_end
-        check (date_of_start < date_of_end)
+    id            SERIAL
+        CONSTRAINT competitions_pk
+            PRIMARY KEY,
+    name          VARCHAR(200) NOT NULL,
+    date_of_start DATE         NOT NULL,
+    date_of_end   DATE         NOT NULL,
+    CONSTRAINT check_date_of_start_before_date_of_end
+        CHECK (date_of_start < date_of_end)
 );
 
-comment on table competitions is 'Соревнования.';
+COMMENT ON TABLE competitions IS 'Соревнования.';
 
-comment on column competitions.id is 'Идентификатор.';
+COMMENT ON COLUMN competitions.id IS 'Идентификатор.';
 
-comment on column competitions.name is 'Название.';
+COMMENT ON COLUMN competitions.name IS 'Название.';
 
-comment on column competitions.date_of_start is 'Дата начала (включительно).';
+COMMENT ON COLUMN competitions.date_of_start IS 'Дата начала (включительно).';
 
-comment on column competitions.date_of_end is 'Дата завершения (включительно).';
+COMMENT ON COLUMN competitions.date_of_end IS 'Дата завершения (включительно).';
 
-comment on constraint check_date_of_start_before_date_of_end on competitions is 'Проверить, что дата начала соревнования раньше, чем его завершение.';
-
-alter table competitions
-    owner to postgres;
-
+COMMENT ON CONSTRAINT check_date_of_start_before_date_of_end ON competitions IS 'Проверить, что дата начала соревнования раньше, чем его завершение.';

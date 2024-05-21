@@ -1,36 +1,39 @@
-create table if not exists places
+CREATE TABLE IF NOT EXISTS places
 (
-    id                serial
-        constraint places_pk
-            primary key,
-    hall_id           integer not null
-        constraint places___fk
-            references halls,
-    price_coefficient numeric not null
-        constraint price_coefficient_check
-            check (price_coefficient > (0)::numeric)
+    id                SERIAL
+        CONSTRAINT places_pk
+            PRIMARY KEY,
+    hall_id           INTEGER NOT NULL
+        CONSTRAINT places___fk
+            REFERENCES halls,
+    price_coefficient NUMERIC NOT NULL
+        CONSTRAINT price_coefficient_check
+            CHECK (price_coefficient > (0)::NUMERIC)
 );
 
-comment on table places is 'Места в зале.';
+COMMENT ON TABLE places IS 'Места в зале.';
 
-comment on column places.id is 'Идентификатор места в зале.';
+COMMENT ON COLUMN places.id IS 'Идентификатор места в зале.';
 
-comment on column places.hall_id is 'Идентификатор зала.';
+COMMENT ON COLUMN places.hall_id IS 'Идентификатор зала.';
 
-comment on column places.price_coefficient is 'Коэффициент цены за место.';
+COMMENT ON COLUMN places.price_coefficient IS 'Коэффициент цены за место.';
 
 
-CREATE OR REPLACE FUNCTION check_hall_exists() RETURNS TRIGGER AS $$
+CREATE OR REPLACE FUNCTION check_hall_exists() RETURNS TRIGGER AS
+$$
 BEGIN
-    IF NOT EXISTS (SELECT 1 FROM halls WHERE id = NEW.hall_id) THEN
+    IF NOT EXISTS (SELECT 1 FROM halls WHERE id = new.hall_id) THEN
         RAISE EXCEPTION 'The hall does not exist';
     END IF;
-    RETURN NEW;
+    RETURN new;
 END;
 $$ LANGUAGE plpgsql;
 
 CREATE TRIGGER trg_check_hall_exists
-    BEFORE INSERT ON places
-    FOR EACH ROW EXECUTE FUNCTION check_hall_exists();
+    BEFORE INSERT
+    ON places
+    FOR EACH ROW
+EXECUTE FUNCTION check_hall_exists();
 
 

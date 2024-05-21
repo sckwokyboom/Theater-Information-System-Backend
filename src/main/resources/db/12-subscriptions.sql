@@ -1,19 +1,15 @@
-create table if not exists subscriptions
+CREATE TABLE IF NOT EXISTS subscriptions
 (
-    id    serial
-        constraint subscriptions_pk
-            primary key,
-    price numeric not null
-        constraint price_check
-            check (price >= (0)::numeric)
+    id    SERIAL
+        CONSTRAINT subscriptions_pk
+            PRIMARY KEY,
+    price NUMERIC NOT NULL
+        CONSTRAINT price_check
+            CHECK (price >= (0)::NUMERIC)
 );
 
-comment on table subscriptions is 'Подписки на билеты.';
+COMMENT ON TABLE subscriptions IS 'Подписки на билеты.';
 
-comment on column subscriptions.id is 'Идентификатор подписки.';
+COMMENT ON COLUMN subscriptions.id IS 'Идентификатор подписки.';
 
-comment on column subscriptions.price is 'Цена подписки.';
-
-alter table subscriptions
-    owner to postgres;
-
+COMMENT ON COLUMN subscriptions.price IS 'Цена подписки.';

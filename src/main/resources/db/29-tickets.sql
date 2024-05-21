@@ -1,43 +1,38 @@
-create table if not exists tickets
+CREATE TABLE IF NOT EXISTS tickets
 (
-    id              serial
-        constraint tickets_pk
-            primary key,
-    performance_id  integer not null
-        constraint tickets_perfomances_id_fk
-            references performances,
-    price           numeric not null
-        constraint price_check
-            check (price >= (0)::numeric),
-    place_id        integer not null
-        constraint tickets_places_id_fk
-            references places,
-    subscription_id integer
-        constraint tickets_subscriptions_id_fk
-            references subscriptions,
-    sale_date       date    not null
+    id              SERIAL
+        CONSTRAINT tickets_pk
+            PRIMARY KEY,
+    performance_id  INTEGER NOT NULL
+        CONSTRAINT tickets_perfomances_id_fk
+            REFERENCES performances,
+    price           NUMERIC NOT NULL
+        CONSTRAINT price_check
+            CHECK (price >= (0)::NUMERIC),
+    place_id        INTEGER NOT NULL
+        CONSTRAINT tickets_places_id_fk
+            REFERENCES places,
+    subscription_id INTEGER
+        CONSTRAINT tickets_subscriptions_id_fk
+            REFERENCES subscriptions,
+    sale_date       DATE    NOT NULL
 );
 
-comment on table tickets is 'Билеты на спектакли';
+COMMENT ON TABLE tickets IS 'Билеты на спектакли';
 
-comment on column tickets.id is 'Идентификатор билета.';
+COMMENT ON COLUMN tickets.id IS 'Идентификатор билета.';
 
-comment on column tickets.performance_id is 'Идентификатор спектакля.';
+COMMENT ON COLUMN tickets.performance_id IS 'Идентификатор спектакля.';
 
-comment on column tickets.price is 'Цена билета в рублях.';
+COMMENT ON COLUMN tickets.price IS 'Цена билета в рублях.';
 
-comment on column tickets.place_id is 'Идентификатор места в зале.';
+COMMENT ON COLUMN tickets.place_id IS 'Идентификатор места в зале.';
 
-comment on column tickets.subscription_id is 'Идентификатор подписки (если билет входит в подписку).';
+COMMENT ON COLUMN tickets.subscription_id IS 'Идентификатор подписки (если билет входит в подписку).';
 
-alter table tickets
-    owner to postgres;
-
-
-
-create or replace function public.check_prevent_duplicate_tickets() returns trigger
-    language plpgsql
-as
+CREATE OR REPLACE FUNCTION public.check_prevent_duplicate_tickets() RETURNS TRIGGER
+    LANGUAGE plpgsql
+AS
 $$
 DECLARE
     overlapping_count INTEGER;
@@ -45,51 +40,55 @@ BEGIN
     SELECT COUNT(*)
     INTO overlapping_count
     FROM tickets
-    WHERE performance_id = NEW.performance_id
-      AND place_id = NEW.place_id
-      AND id != NEW.id;
+    WHERE performance_id = new.performance_id
+      AND place_id = new.place_id
+      AND id != new.id;
     IF overlapping_count > 0 THEN
         RAISE EXCEPTION 'Нельзя купить несколько билетов на одно и то же место одного и того же спектакля.';
     END IF;
-    RETURN NEW;
+    RETURN new;
 END;
 $$;
 
 CREATE OR REPLACE FUNCTION check_place_performance_hall()
-    RETURNS TRIGGER AS $$
+    RETURNS TRIGGER AS
+$$
 DECLARE
     performance_hall_id INTEGER;
-    place_hall_id INTEGER;
+    place_hall_id       INTEGER;
 BEGIN
     -- Получаем hall_id для performance_id
-    SELECT hall_id INTO performance_hall_id
+    SELECT hall_id
+    INTO performance_hall_id
     FROM performances
-    WHERE id = NEW.performance_id;
+    WHERE id = new.performance_id;
 
     -- Получаем hall_id для place_id
-    SELECT hall_id INTO place_hall_id
+    SELECT hall_id
+    INTO place_hall_id
     FROM places
-    WHERE id = NEW.place_id;
+    WHERE id = new.place_id;
 
     -- Проверяем, совпадают ли hall_id
     IF performance_hall_id IS DISTINCT FROM place_hall_id THEN
-        RAISE EXCEPTION 'Place_id % does not belong to the same hall as performance_id %', NEW.place_id, NEW.performance_id;
+        RAISE EXCEPTION 'Place_id % does not belong to the same hall as performance_id %', new.place_id, new.performance_id;
     END IF;
 
-    RETURN NEW;
+    RETURN new;
 END;
 $$ LANGUAGE plpgsql;
 
 
 CREATE TRIGGER trigger_check_place_performance_hall
-    BEFORE INSERT ON tickets
+    BEFORE INSERT
+    ON tickets
     FOR EACH ROW
 EXECUTE FUNCTION check_place_performance_hall();
 
 
-create trigger check_duplicate_tickets
-    before insert or update
-    on tickets
-    for each row
-execute procedure public.check_prevent_duplicate_tickets();
+CREATE TRIGGER check_duplicate_tickets
+    BEFORE INSERT OR UPDATE
+    ON tickets
+    FOR EACH ROW
+EXECUTE PROCEDURE public.check_prevent_duplicate_tickets();
 

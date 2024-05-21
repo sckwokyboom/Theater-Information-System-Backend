@@ -1,19 +1,15 @@
-create table if not exists directors
+CREATE TABLE IF NOT EXISTS directors
 (
-    id        serial
-        constraint directors_pk
-            primary key,
-    artist_id integer not null
-        constraint directors_artist_id_fk
-            references artists
+    id        SERIAL
+        CONSTRAINT directors_pk
+            PRIMARY KEY,
+    artist_id INTEGER NOT NULL
+        CONSTRAINT directors_artist_id_fk
+            REFERENCES artists
 );
 
-comment on table directors is 'Директоры.';
+COMMENT ON TABLE directors IS 'Директоры.';
 
-comment on column directors.id is 'Идентификатор.';
+COMMENT ON COLUMN directors.id IS 'Идентификатор.';
 
-comment on column directors.artist_id is 'Идентификатор директора как артиста.';
-
-alter table directors
-    owner to postgres;
-
+COMMENT ON COLUMN directors.artist_id IS 'Идентификатор директора как артиста.';

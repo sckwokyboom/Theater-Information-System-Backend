@@ -1,46 +1,42 @@
-create table if not exists actors
+CREATE TABLE IF NOT EXISTS actors
 (
-    id             serial
-        constraint actors_pk
-            primary key,
-    artist_id      integer         not null
-        constraint actors_artist_id_fk
-            references artists,
-    voice          voice_type      not null,
-    weight         integer         not null
-        constraint weight_check
-            check (weight > 0),
-    height         integer         not null
-        constraint height_check
-            check (height > 0),
-    hair_color     varchar         not null,
-    eye_color      varchar         not null,
-    skin_color     skin_color_type not null,
-    nationality_id integer         not null
-        constraint actors_nationality_id_fk
-            references nationalities
+    id             SERIAL
+        CONSTRAINT actors_pk
+            PRIMARY KEY,
+    artist_id      INTEGER         NOT NULL
+        CONSTRAINT actors_artist_id_fk
+            REFERENCES artists,
+    voice          VOICE_TYPE      NOT NULL,
+    weight         INTEGER         NOT NULL
+        CONSTRAINT weight_check
+            CHECK (weight > 0),
+    height         INTEGER         NOT NULL
+        CONSTRAINT height_check
+            CHECK (height > 0),
+    hair_color     VARCHAR         NOT NULL,
+    eye_color      VARCHAR         NOT NULL,
+    skin_color     SKIN_COLOR_TYPE NOT NULL,
+    nationality_id INTEGER         NOT NULL
+        CONSTRAINT actors_nationality_id_fk
+            REFERENCES nationalities
 );
 
-comment on table actors is 'Актёры.';
+COMMENT ON TABLE actors IS 'Актёры.';
 
-comment on column actors.id is 'Идентификатор.';
+COMMENT ON COLUMN actors.id IS 'Идентификатор.';
 
-comment on column actors.artist_id is 'Идентификатор актёра как артиста.';
+COMMENT ON COLUMN actors.artist_id IS 'Идентификатор актёра как артиста.';
 
-comment on column actors.voice is 'Тип голоса.';
+COMMENT ON COLUMN actors.voice IS 'Тип голоса.';
 
-comment on column actors.weight is 'Вес в кг.';
+COMMENT ON COLUMN actors.weight IS 'Вес в кг.';
 
-comment on column actors.height is 'Рост в см.';
+COMMENT ON COLUMN actors.height IS 'Рост в см.';
 
-comment on column actors.hair_color is 'Цвет волос.';
+COMMENT ON COLUMN actors.hair_color IS 'Цвет волос.';
 
-comment on column actors.eye_color is 'Цвет глаз.';
+COMMENT ON COLUMN actors.eye_color IS 'Цвет глаз.';
 
-comment on column actors.skin_color is 'Цвет кожи.';
+COMMENT ON COLUMN actors.skin_color IS 'Цвет кожи.';
 
-comment on column actors.nationality_id is 'Идентификатор национальности.';
-
-alter table actors
-    owner to postgres;
-
+COMMENT ON COLUMN actors.nationality_id IS 'Идентификатор национальности.';
