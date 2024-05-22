@@ -9,18 +9,15 @@ import ru.nsu.fit.sckwo.utils.SqlQueryBuilder
 @Repository
 class ActorRepository(private val jdbcTemplate: JdbcTemplate) {
     fun getAllActors(): List<Actor> {
-        return getFilterActors(null, null, null, null, null, null, null, null, null, null, null, null, null, null)
+        return getFilterActors(null, null, null, null, null, null, null, null, null, null, null)
     }
 
     fun getFilterActors(
         roleWeight: Int?,
         roleHeight: Int?,
-        roleEyeColor: String?,
         roleSkinColor: String?,
         roleHairColor: String?,
         roleVoiceType: String?,
-        roleGender: String?,
-        roleAge: Int?,
         roleNationalityId: Int?,
         titleId: Int?,
         age: Int?,
@@ -50,23 +47,14 @@ class ActorRepository(private val jdbcTemplate: JdbcTemplate) {
         if (roleHeight != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("actors.height = $roleHeight")
         }
-        if (roleEyeColor != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.eye_color = $roleEyeColor")
-        }
         if (roleSkinColor != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.skin_color = $roleSkinColor")
+            sqlQueryBuilder = sqlQueryBuilder.where("actors.skin_color = '$roleSkinColor'")
         }
         if (roleHairColor != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.hair_color = $roleHairColor")
+            sqlQueryBuilder = sqlQueryBuilder.where("actors.hair_color = '$roleHairColor'")
         }
         if (roleVoiceType != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.voice = $roleVoiceType")
-        }
-        if (roleGender != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.gender = $roleGender")
-        }
-        if (roleAge != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("EXTRACT(YEAR FROM age(employees.date)) = $roleAge")
+            sqlQueryBuilder = sqlQueryBuilder.where("actors.voice = '$roleVoiceType'")
         }
         if (roleNationalityId != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("actors.nationality_id = $roleNationalityId")
@@ -75,10 +63,10 @@ class ActorRepository(private val jdbcTemplate: JdbcTemplate) {
             sqlQueryBuilder = sqlQueryBuilder.where("actors_titles.title_id = $titleId")
         }
         if (age != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("EXTRACT(YEAR FROM age(employees.date)) = $age")
+            sqlQueryBuilder = sqlQueryBuilder.where("EXTRACT(YEAR FROM age(employees.date_of_birth)) = $age")
         }
         if (gender != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("actors.gender = $gender")
+            sqlQueryBuilder = sqlQueryBuilder.where("employees.gender = '$gender'")
         }
         if (dateOfStartForTitle != null) {
             sqlQueryBuilder = sqlQueryBuilder

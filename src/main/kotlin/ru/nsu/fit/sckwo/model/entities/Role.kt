@@ -14,4 +14,5 @@ data class Role(
     val playId: Int,
     val description: String?,
     val nationalityId: Int?,
+    val nationalityName: String?,
 )

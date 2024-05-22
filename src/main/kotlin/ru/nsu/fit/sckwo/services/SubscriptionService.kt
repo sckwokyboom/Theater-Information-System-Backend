@@ -26,6 +26,17 @@ class SubscriptionService(
 //    }
 
     @Transactional
+    fun deleteSubscriptionWithTickets(subscriptionId: Int) {
+        // Удаление связанных билетов
+        val deleteTicketsSql = "DELETE FROM tickets WHERE subscription_id = ?"
+        jdbcTemplate.update(deleteTicketsSql, subscriptionId)
+
+        // Удаление подписки
+        val deleteSubscriptionSql = "DELETE FROM subscriptions WHERE id = ?"
+        jdbcTemplate.update(deleteSubscriptionSql, subscriptionId)
+    }
+
+    @Transactional
     @Throws(SQLException::class)
     fun createSubscriptionWithTickets(performanceIds: List<Int>, placeIds: List<Int>) {
         require(performanceIds.size == placeIds.size) { "The length of performanceIds and placeIds must be the same" }

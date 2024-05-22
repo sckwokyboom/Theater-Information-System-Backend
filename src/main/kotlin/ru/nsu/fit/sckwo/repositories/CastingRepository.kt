@@ -25,7 +25,7 @@ class CastingRepository(private val jdbcTemplate: JdbcTemplate) {
         ageCategory: String?,
     ): List<Casting> {
         var sqlQueryBuilder = SqlQueryBuilder()
-            .select("castings.actor_id actor_id, employees.first_name first_name, employees.second_name second_name, plays.title title, performances.date date, performances.id performance_id, castings.double_id double_id, roles.id role_id, roles.name role_name, roles.description role_description")
+            .select("castings.actor_id actor_id, employees.first_name first_name, employees.second_name second_name, plays.title title, performances.start_time start_time, performances.end_time end_time, performances.id performance_id, castings.double_id double_id, roles.id role_id, roles.name role_name, roles.description role_description")
             .from("castings")
             .leftJoin("actors")
             .on("castings.actor_id = actors.id")
@@ -49,11 +49,11 @@ class CastingRepository(private val jdbcTemplate: JdbcTemplate) {
         }
         if (dateOfStart != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("performances.date >= $dateOfStart")
+                .where("performances.start_time >= $dateOfStart")
         }
         if (dateOfEnd != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("performances.date >= $dateOfEnd")
+                .where("performances.end_time <= $dateOfEnd")
         }
         if (playGenreId != null) {
             sqlQueryBuilder = sqlQueryBuilder

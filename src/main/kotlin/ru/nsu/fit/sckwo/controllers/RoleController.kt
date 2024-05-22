@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
+import ru.nsu.fit.sckwo.model.entities.Employee
 import ru.nsu.fit.sckwo.model.entities.Role
 import ru.nsu.fit.sckwo.repositories.RoleRepository
 
@@ -17,4 +19,19 @@ class RoleController @Autowired constructor(private val roleRepository: RoleRepo
     fun getAllRoles(): ResponseEntity<List<Role>> {
         return ResponseEntity.ok(roleRepository.getAllRoles())
     }
+
+    @GetMapping("/filter")
+    fun getFilterRoles(
+        @RequestParam(required = false) actorId: Int?,
+        @RequestParam(required = false) genreId: Int?,
+        @RequestParam(required = false) productionDirectorId: Int?,
+        @RequestParam(required = false) periodOfPerformancesStartDate: String?,
+        @RequestParam(required = false) periodOfPerformancesEndDate: String?,
+        @RequestParam(required = false) ageCategory: Int?,
+
+
+        ): ResponseEntity<List<Employee>> {
+        TODO()
+    }
+
 }

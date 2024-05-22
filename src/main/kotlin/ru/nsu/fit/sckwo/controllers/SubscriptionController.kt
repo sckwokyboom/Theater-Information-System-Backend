@@ -30,6 +30,17 @@ class SubscriptionController @Autowired constructor(
         return ResponseEntity.ok().build()
     }
 
+    @DeleteMapping("/{subscriptionId}")
+    fun deleteSubscription(@PathVariable subscriptionId: Int): ResponseEntity<String> {
+        return try {
+            subscriptionService.deleteSubscriptionWithTickets(subscriptionId)
+            ResponseEntity.ok("Subscription deleted successfully.")
+        } catch (e: Exception) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Failed to delete subscription: ${e.message}")
+        }
+    }
+
 //    @PostMapping("/create")
 //    fun createSubscriptionWithTickets(@RequestBody request: CreateSubscriptionRequest): ResponseEntity<Subscription> {
 //        val subscription = Subscription(id = null, price = request.price)
