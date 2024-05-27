@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    container_name: theater_db
+    container_name: theater_database_test
     image: postgres:latest
     environment:
       POSTGRES_USER: postgres
@@ -13,20 +13,6 @@ services:
     restart: always
     networks:
       - network
-
-#  liquibase:
-#    image: liquibase/liquibase:latest
-#    container_name: liquibase
-#    depends_on:
-#      - postgres
-#    entrypoint: [ "sh", "-c", "apk add --no-cache postgresql-client && until pg_isready -h postgres -p 5432 -U postgres; do sleep 1; done; liquibase --defaultsFile=/liquibase/liquibase.properties update" ]
-#    environment:
-#      LIQUIBASE_PROPERTIES_FILE: /liquibase/liquibase.properties
-#    volumes:
-#      - ./liquibase:/liquibase/changelog
-#    networks:
-#      - network
-
 networks:
   network:
     driver: bridge
