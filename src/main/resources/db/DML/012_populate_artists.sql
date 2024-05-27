@@ -4,3 +4,6 @@ INSERT INTO artists (id, employee_id) VALUES (3, 10);
 INSERT INTO artists (id, employee_id) VALUES (4, 11);
 INSERT INTO artists (id, employee_id) VALUES (5, 8);
 INSERT INTO artists (id, employee_id) VALUES (6, 7);
+INSERT INTO artists (id, employee_id) VALUES (7, 1);
+INSERT INTO artists (id, employee_id) VALUES (8, 2);
+INSERT INTO artists (id, employee_id) VALUES (9, 3);

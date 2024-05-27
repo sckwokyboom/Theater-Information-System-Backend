@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.NationalityRepository
 
 @Controller
 @RequestMapping("/nationalities")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class NationalityController @Autowired constructor(private val nationalityRepository: NationalityRepository) {
     @GetMapping("")
     fun getAllNationalities(): ResponseEntity<List<Nationality>> {

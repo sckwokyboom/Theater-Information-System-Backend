@@ -12,7 +12,7 @@ import ru.nsu.fit.sckwo.repositories.PerformanceRepository
 
 @Controller
 @RequestMapping("/performances")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class PerformanceController @Autowired constructor(private val performanceRepository: PerformanceRepository) {
     @GetMapping("/filter")
     fun getFilterPerformances(

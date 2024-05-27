@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS plays
     genre_id INTEGER      NOT NULL
         CONSTRAINT play_genre_id_fk
             REFERENCES genres,
-    century  INTEGER      NOT NULL
+    century  INTEGER
         CONSTRAINT check_century_is_not_zero
             CHECK (century <> 0)
 );

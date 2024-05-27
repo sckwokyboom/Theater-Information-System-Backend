@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.CompetitionRepository
 
 @Controller
 @RequestMapping("/competitions")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class CompetitionController @Autowired constructor(private val competitionRepository: CompetitionRepository) {
     @GetMapping("")
     fun getAllTitles(): ResponseEntity<List<Competition>> {

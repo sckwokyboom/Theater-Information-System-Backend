@@ -23,8 +23,9 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
         centuryOfLiving: Int?,
         countryOfOriginId: Int?,
         genreId: Int?,
-        dateOfStartPerformanceAuthorsPlays: Int?,
-        dateOfEndPerformanceAuthorsPlays: Int?,
+        dateOfStartPerformanceAuthorsPlays: String?,
+        dateOfEndPerformanceAuthorsPlays: String?,
+        performanceId: Int?,
     ): List<Author> {
         var sqlQueryBuilder = SqlQueryBuilder()
             .selectDistinct("authors.id, first_name, second_name, patronymic, date_of_birth, date_of_death, countries.name country_of_origin_name")
@@ -32,6 +33,22 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
             .leftJoin("countries")
             .on("authors.country_of_origin_id = countries.id")
 
+//        if (wasPerformed != null) {
+//            sqlQueryBuilder = sqlQueryBuilder
+//                .leftJoin("authors_plays")
+//                .on("authors_plays.author_id = authors.id")
+//                .leftJoin("plays")
+//                .on("plays.id = authors_plays.play_id")
+//                .leftJoin("performances")
+//                .on("performances.play_id = plays.id")
+//            sqlQueryBuilder = if (wasPerformed) {
+//                sqlQueryBuilder
+//                    .where("performances.play_id IS NOT NULL")
+//            } else {
+//                sqlQueryBuilder
+//                    .where("performances.play_id IS NULL")
+//            }
+//        }
         if (wasPerformed != null) {
             sqlQueryBuilder = sqlQueryBuilder
                 .leftJoin("authors_plays")
@@ -40,16 +57,12 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
                 .on("plays.id = authors_plays.play_id")
                 .leftJoin("performances")
                 .on("performances.play_id = plays.id")
-            sqlQueryBuilder = if (wasPerformed) {
-                sqlQueryBuilder
-                    .where("performances.play_id IS NOT NULL")
-            } else {
-                sqlQueryBuilder
-                    .where("performances.play_id IS NULL")
-            }
+                .where(if (wasPerformed) "performances.play_id IS NOT NULL" else "performances.play_id IS NULL")
         }
+
         if (centuryOfLiving != null) {
-            sqlQueryBuilder = sqlQueryBuilder.where("century_of_living = $centuryOfLiving")
+            sqlQueryBuilder = sqlQueryBuilder
+                .where("EXTRACT(CENTURY FROM authors.date_of_birth) = $centuryOfLiving OR EXTRACT(CENTURY FROM authors.date_of_death) = $centuryOfLiving OR ((EXTRACT(CENTURY FROM authors.date_of_birth) = 20 OR EXTRACT(CENTURY FROM authors.date_of_birth) = 21 OR EXTRACT(CENTURY FROM authors.date_of_birth) = 19) AND authors.date_of_death IS NULL)")
         }
         if (countryOfOriginId != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("countries.id = $countryOfOriginId")
@@ -64,13 +77,9 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
                 .on("plays.id = authors_plays.play_id")
                 .where("plays.genre_id = $genreId")
                 .build()
+
             sqlQueryBuilder = sqlQueryBuilder
                 .where("authors.id IN ($subQuery)")
-//                .leftJoin("authors_plays")
-//                .on("authors_plays.author_id = authors.id")
-//                .leftJoin("plays")
-//                .on("plays.id = authors_plays.play_id")
-//                .where("plays.genre_id = $genreId")
         }
         if (dateOfStartPerformanceAuthorsPlays != null) {
             sqlQueryBuilder = sqlQueryBuilder
@@ -86,12 +95,23 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
         if (dateOfEndPerformanceAuthorsPlays != null) {
             sqlQueryBuilder = sqlQueryBuilder
                 .leftJoin("authors_plays")
-                .on("authors_plays.author_id = author.id")
+                .on("authors_plays.author_id = authors.id")
                 .leftJoin("plays")
                 .on("plays.id = authors_plays.play_id")
                 .rightJoin("performances")
                 .on("plays.id = performances.play_id")
                 .where("performances.date >= $dateOfEndPerformanceAuthorsPlays")
+        }
+
+        if (performanceId != null) {
+            sqlQueryBuilder = sqlQueryBuilder
+                .leftJoin("authors_plays")
+                .on("authors_plays.author_id = authors.id")
+                .leftJoin("plays")
+                .on("plays.id = authors_plays.play_id")
+                .rightJoin("performances")
+                .on("plays.id = performances.play_id")
+                .where("performances.id = $performanceId")
         }
 
         return jdbcTemplate.query(sqlQueryBuilder.build(), AuthorRowMapper())

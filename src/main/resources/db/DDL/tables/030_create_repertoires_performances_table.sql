@@ -14,40 +14,4 @@ COMMENT ON TABLE repertoires_performances IS 'Репертуары и предс
 
 COMMENT ON COLUMN repertoires_performances.performance_id IS 'Идентификатор представления.';
 
-COMMENT ON COLUMN repertoires_performances.repertoire_id IS 'Идентификатор репертура.';
-
-CREATE OR REPLACE FUNCTION public.check_repertoire_dates() RETURNS TRIGGER
-    LANGUAGE plpgsql
-AS
-$$
-DECLARE
-    overlapping_count INTEGER;
-BEGIN
-    -- Проверяем количество спектаклей с пересекающимися датами
-    SELECT COUNT(*)
-    INTO overlapping_count
-    FROM repertoires_performances rp
-             JOIN performances p1 ON rp.performance_id = p1.id
-             JOIN performances p2
-                  ON ((p1.start_time, p1.end_time) OVERLAPS (p2.start_time, p2.end_time));
-
-    -- Если найдено хотя бы одно пересечение дат, кидаем исключение
-    IF overlapping_count > 0 THEN
-        RAISE EXCEPTION 'Невозможно добавить спектакль в репертуар. Дата спектакля пересекается с другими спектаклями.';
-    END IF;
-
-    -- Если проверка пройдена успешно, возвращаем NEW
-    RETURN new;
-END;
-$$;
-
-ALTER FUNCTION public.check_repertoire_dates() OWNER TO postgres;
-
-
-
-CREATE TRIGGER check_repertoire_dates_trigger
-    BEFORE INSERT
-    ON repertoires_performances
-    FOR EACH ROW
-EXECUTE PROCEDURE public.check_repertoire_dates();
-
+COMMENT ON COLUMN repertoires_performances.repertoire_id IS 'Идентификатор репертуара.';

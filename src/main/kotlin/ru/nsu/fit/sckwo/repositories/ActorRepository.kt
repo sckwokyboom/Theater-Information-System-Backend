@@ -70,13 +70,13 @@ class ActorRepository(private val jdbcTemplate: JdbcTemplate) {
         }
         if (dateOfStartForTitle != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("competitions.date IS NOT NULL")
-                .where("competitions.date >= '$dateOfStartForTitle'")
+                .where("competitions.id IS NOT NULL")
+                .where("competitions.date_of_start >= '$dateOfStartForTitle'")
         }
         if (dateOfEndForTitle != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("competitions.date IS NOT NULL")
-                .where("competitions.date <= '$dateOfEndForTitle'")
+                .where("competitions.id IS NOT NULL")
+                .where("competitions.date_of_end <= '$dateOfEndForTitle'")
         }
         return jdbcTemplate.query(sqlQueryBuilder.build(), ActorRowMapper())
     }

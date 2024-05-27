@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.RepertoireRepository
 
 @Controller
 @RequestMapping("/repertoires")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class RepertoireController @Autowired constructor(private val repertoireRepository: RepertoireRepository) {
     @GetMapping("")
     fun getAllRepertoires(): ResponseEntity<List<Repertoire>> {

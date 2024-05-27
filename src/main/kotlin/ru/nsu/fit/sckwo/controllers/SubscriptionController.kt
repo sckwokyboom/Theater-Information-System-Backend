@@ -13,7 +13,7 @@ import java.time.LocalDate
 
 @Controller
 @RequestMapping("/subscriptions")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class SubscriptionController @Autowired constructor(
     private val subscriptionRepository: SubscriptionRepository,
     private val subscriptionService: SubscriptionService,

@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.EmployeeType
 
 @Controller
 @RequestMapping("/employees")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class EmployeeController @Autowired constructor(private val employeeRepository: EmployeeRepository) {
     @GetMapping("/filter")
     fun getFilterEmployees(
@@ -26,9 +26,11 @@ class EmployeeController @Autowired constructor(private val employeeRepository: 
         @RequestParam(required = false) tourEndDate: String?,
         @RequestParam(required = false) tourPlayId: Int?,
         @RequestParam(required = false) performanceId: Int?,
-
-
-        ): ResponseEntity<List<Employee>> {
+        @RequestParam(required = false) yearsOfService: Int?,
+        @RequestParam(required = false) yearOfBirth: Int?,
+        @RequestParam(required = false) age: Int?,
+        @RequestParam(required = false) haveChildren: Boolean?,
+    ): ResponseEntity<List<Employee>> {
         val employeeType: EmployeeType = if (employeeTypeName != null) {
             EmployeeType.valueOf(employeeTypeName)
         } else {
@@ -46,10 +48,15 @@ class EmployeeController @Autowired constructor(private val employeeRepository: 
                 tourStartDate,
                 tourEndDate,
                 tourPlayId,
-                performanceId
+                performanceId,
+                yearsOfService,
+                yearOfBirth,
+                age,
+                haveChildren
             )
         )
     }
+
 
     @PostMapping
     fun createEmployee(@RequestBody employee: Employee): ResponseEntity<Employee> {

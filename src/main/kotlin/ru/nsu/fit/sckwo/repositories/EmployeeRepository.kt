@@ -20,6 +20,10 @@ class EmployeeRepository(private val jdbcTemplate: JdbcTemplate) {
         tourEndDate: String?,
         tourPlayId: Int?,
         performanceId: Int?,
+        yearsOfService: Int?,
+        yearOfBirth: Int?,
+        age: Int?,
+        haveChildren: Boolean?,
     ): List<Employee> {
         var sqlQueryBuilder = when (employeeType) {
             EmployeeType.Any -> getAllEmployeesSqlQueryBuilder()
@@ -42,51 +46,93 @@ class EmployeeRepository(private val jdbcTemplate: JdbcTemplate) {
         if (maxSalary != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("salary <= $maxSalary")
         }
+        if (haveChildren != null) {
+            sqlQueryBuilder = if (haveChildren) {
+                sqlQueryBuilder.where("amount_of_children > 0")
+            } else {
+                sqlQueryBuilder.where("amount_of_children = 0")
+            }
+        }
         if (amountOfChildren != null) {
             sqlQueryBuilder = sqlQueryBuilder.where("amount_of_children = $amountOfChildren")
+        }
+        if (yearsOfService != null) {
+            sqlQueryBuilder =
+                sqlQueryBuilder.where("DATE_PART('year', AGE(CURRENT_DATE, employees.date_of_employment)) = $yearsOfService")
+        }
+        if (yearOfBirth != null) {
+            sqlQueryBuilder = sqlQueryBuilder.where("EXTRACT(YEAR FROM date_of_birth) = $yearOfBirth")
+        }
+        if (age != null) {
+            sqlQueryBuilder =
+                sqlQueryBuilder.where("DATE_PART('year', AGE(CURRENT_DATE, employees.date_of_birth)) = $age")
         }
         if (employeeType == EmployeeType.Manager || employeeType == EmployeeType.Any) {
             return jdbcTemplate.query(sqlQueryBuilder.build(), EmployeeRowMapper())
         }
 
-        if (goneOnTour != null) {
-            if (goneOnTour) {
+
+        if (goneOnTour != null && cameOnTour != null) {
+            if (!goneOnTour && !cameOnTour) {
                 sqlQueryBuilder = sqlQueryBuilder
                     .leftJoin("artists_tours")
                     .on("artists.id = artists_tours.artist_id")
                     .leftJoin("tours")
-                    .on("tours.id = artists_tours.tour_id")
-                    .where("tours.organization_theater_id = employees.theater_id")
-                    .where("tours.organization_theater_id IS NOT NULL")
-            } else {
-                sqlQueryBuilder = sqlQueryBuilder
-                    .leftJoin("artists_tours")
-                    .on("artists.id = artists_tours.artist_id")
-                    .leftJoin("tours")
-                    .on("tours.id = artists_tours.tour_id")
-                    .where("tours.organization_theater_id = employees.theater_id")
+                    .on("tours.id = artists_tours.tour_id AND tours.organization_theater_id = employees.theater_id OR tours.id = artists_tours.tour_id AND tours.tour_theater_id = employees.theater_id")
                     .where("tours.organization_theater_id IS NULL")
-            }
-        }
-        if (cameOnTour != null) {
-            if (cameOnTour) {
+            } else if (!goneOnTour && cameOnTour) {
                 sqlQueryBuilder = sqlQueryBuilder
                     .leftJoin("artists_tours")
                     .on("artists.id = artists_tours.artist_id")
                     .leftJoin("tours")
-                    .on("tours.id = artists_tours.tour_id")
-                    .where("tours.tour_theater_id = employees.theater_id")
+                    .on("tours.id = artists_tours.tour_id AND tours.tour_theater_id = employees.theater_id")
                     .where("tours.tour_theater_id IS NOT NULL")
-            } else {
+            } else if (goneOnTour && !cameOnTour) {
                 sqlQueryBuilder = sqlQueryBuilder
                     .leftJoin("artists_tours")
                     .on("artists.id = artists_tours.artist_id")
                     .leftJoin("tours")
-                    .on("tours.id = artists_tours.tour_id")
-                    .where("tours.tour_theater_id = employees.theater_id")
-                    .where("tours.tour_theater_id IS NULL")
+                    .on("tours.id = artists_tours.tour_id AND tours.organization_theater_id = employees.theater_id")
+                    .where("tours.organization_theater_id IS NOT NULL")
+            }
+        } else {
+            if (goneOnTour != null) {
+                if (goneOnTour) {
+                    sqlQueryBuilder = sqlQueryBuilder
+                        .leftJoin("artists_tours")
+                        .on("artists.id = artists_tours.artist_id")
+                        .leftJoin("tours")
+                        .on("tours.id = artists_tours.tour_id AND tours.organization_theater_id = employees.theater_id")
+                        .where("tours.organization_theater_id IS NOT NULL")
+                } else {
+                    sqlQueryBuilder = sqlQueryBuilder
+                        .leftJoin("artists_tours")
+                        .on("artists.id = artists_tours.artist_id")
+                        .leftJoin("tours")
+                        .on("tours.id = artists_tours.tour_id AND tours.organization_theater_id = employees.theater_id")
+                        .where("tours.organization_theater_id IS NULL")
+                }
+            }
+
+            if (cameOnTour != null) {
+                if (cameOnTour) {
+                    sqlQueryBuilder = sqlQueryBuilder
+                        .leftJoin("artists_tours")
+                        .on("artists.id = artists_tours.artist_id")
+                        .leftJoin("tours")
+                        .on("tours.id = artists_tours.tour_id AND tours.tour_theater_id = employees.theater_id")
+                        .where("tours.tour_theater_id IS NOT NULL")
+                } else {
+                    sqlQueryBuilder = sqlQueryBuilder
+                        .leftJoin("artists_tours")
+                        .on("artists.id = artists_tours.artist_id")
+                        .leftJoin("tours")
+                        .on("tours.id = artists_tours.tour_id AND tours.tour_theater_id = employees.theater_id")
+                        .where("tours.tour_theater_id IS NULL")
+                }
             }
         }
+
         if (tourStartDate != null) {
             sqlQueryBuilder = sqlQueryBuilder
                 .leftJoin("artists_tours")
@@ -131,7 +177,7 @@ class EmployeeRepository(private val jdbcTemplate: JdbcTemplate) {
                     sqlQueryBuilder = sqlQueryBuilder
                         .leftJoin("production_directors_performances")
                         .on("production_directors_performances.production_director_id = production_directors.id")
-                        .where("musicians_performances.performance_id = $performanceId")
+                        .where("production_directors_performances.performance_id = $performanceId")
                 }
 
                 EmployeeType.ProductionDesigner -> {
@@ -154,6 +200,7 @@ class EmployeeRepository(private val jdbcTemplate: JdbcTemplate) {
 
         return jdbcTemplate.query(sqlQueryBuilder.build(), EmployeeRowMapper())
     }
+
 
     private fun getAllEmployeesSqlQueryBuilder(): SqlQueryBuilder {
         return SqlQueryBuilder()

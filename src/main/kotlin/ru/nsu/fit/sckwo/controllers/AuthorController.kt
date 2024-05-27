@@ -13,7 +13,7 @@ import ru.nsu.fit.sckwo.repositories.AuthorRepository
 
 @Controller
 @RequestMapping("/authors")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class AuthorController @Autowired constructor(private val authorRepository: AuthorRepository) {
     @GetMapping("")
     fun getAllAuthors(): ResponseEntity<List<Author>> {
@@ -28,8 +28,9 @@ class AuthorController @Autowired constructor(private val authorRepository: Auth
         @RequestParam(required = false) centuryOfLiving: Int?,
         @RequestParam(required = false) countryOfOriginId: Int?,
         @RequestParam(required = false) genreId: Int?,
-        @RequestParam(required = false) dateOfStartPerformanceAuthorsPlays: Int?,
-        @RequestParam(required = false) dateOfEndPerformanceAuthorsPlays: Int?,
+        @RequestParam(required = false) dateOfStartPerformanceAuthorsPlays: String?,
+        @RequestParam(required = false) dateOfEndPerformanceAuthorsPlays: String?,
+        @RequestParam(required = false) performanceId: Int?,
     ): ResponseEntity<List<Author>> {
         return ResponseEntity.ok(
             authorRepository.getFilterAuthors(
@@ -38,7 +39,8 @@ class AuthorController @Autowired constructor(private val authorRepository: Auth
                 countryOfOriginId,
                 genreId,
                 dateOfStartPerformanceAuthorsPlays,
-                dateOfEndPerformanceAuthorsPlays
+                dateOfEndPerformanceAuthorsPlays,
+                performanceId
             )
         )
     }

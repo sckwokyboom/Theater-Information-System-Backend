@@ -77,6 +77,8 @@ class PerformanceRepository(private val jdbcTemplate: JdbcTemplate) {
         if (isUpcoming != null) {
             if (isUpcoming) {
                 sqlQueryBuilder = sqlQueryBuilder.where("performances.start_time >= CURRENT_DATE")
+            } else {
+                sqlQueryBuilder = sqlQueryBuilder.where("performances.end_time < CURRENT_DATE")
             }
         }
         return jdbcTemplate.query(sqlQueryBuilder.build(), PerformanceRowMapper())

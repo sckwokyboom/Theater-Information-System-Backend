@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.PlayRepository
 
 @Controller
 @RequestMapping("/plays")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class PlayController @Autowired constructor(private val playRepository: PlayRepository) {
     @GetMapping("")
     fun getAllPlays(): ResponseEntity<List<Play>> {

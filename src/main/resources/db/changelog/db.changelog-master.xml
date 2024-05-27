@@ -8,5 +8,6 @@
     <includeAll path="db/DDL/types"/>
     <includeAll path="db/DDL/tables"/>
     <includeAll path="db/DDL/functions"/>
+    <includeAll path="db/DDL/triggers"/>
     <includeAll path="db/DML"/>
 </databaseChangeLog>

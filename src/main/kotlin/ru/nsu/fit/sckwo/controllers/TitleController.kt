@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.TitleRepository
 
 @Controller
 @RequestMapping("/titles")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class TitleController @Autowired constructor(private val titleRepository: TitleRepository) {
     @GetMapping("")
     fun getAllTitles(): ResponseEntity<List<Title>> {

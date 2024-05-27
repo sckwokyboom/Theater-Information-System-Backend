@@ -1,1 +1,1 @@
-INSERT INTO subscriptions (price) VALUES (12000);
+INSERT INTO subscriptions (id, price) VALUES (1, 1000);

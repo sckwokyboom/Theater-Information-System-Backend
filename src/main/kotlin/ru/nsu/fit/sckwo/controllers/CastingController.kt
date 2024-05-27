@@ -12,7 +12,7 @@ import ru.nsu.fit.sckwo.repositories.CastingRepository
 
 @Controller
 @RequestMapping("/castings")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class CastingController @Autowired constructor(private val castingRepository: CastingRepository) {
     @GetMapping("")
     fun getAllCastings(): ResponseEntity<List<Casting>> {

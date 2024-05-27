@@ -21,11 +21,11 @@ class FreePlaceRepository(private val jdbcTemplate: JdbcTemplate) {
 
     fun getPlaces(
         performanceId: Int?,
-        isPremiere: String?,
-        isUpcomingPerformances: String?,
+        isPremiere: Boolean?,
+        isUpcomingPerformances: Boolean?,
     ): List<FreePlace> {
         var sqlQueryBuilder = SqlQueryBuilder()
-            .select("places.id, halls.title hall_title, places.price_coefficient price_coefficient, performances.id performance_id")
+            .selectDistinct("places.id, halls.title hall_title, places.price_coefficient price_coefficient, performances.id performance_id")
             .from("performances")
             .leftJoin("places")
             .on("places.hall_id = performances.hall_id")
@@ -33,12 +33,15 @@ class FreePlaceRepository(private val jdbcTemplate: JdbcTemplate) {
             .on("tickets.place_id = places.id AND tickets.performance_id = performances.id")
             .leftJoin("halls")
             .on("places.hall_id = halls.id")
-            .where("tickets.performance_id IS NULL")
+            .where("tickets.id IS NULL")
 
         if (isUpcomingPerformances != null) {
-            if (isUpcomingPerformances == "true") {
+            if (isUpcomingPerformances) {
                 sqlQueryBuilder = sqlQueryBuilder
-                    .where("performances.date >= CURRENT_DATE")
+                    .where("performances.start_time >= CURRENT_DATE")
+            } else {
+                sqlQueryBuilder = sqlQueryBuilder
+                    .where("performances.end_time < CURRENT_DATE")
             }
         }
 
@@ -52,6 +55,9 @@ class FreePlaceRepository(private val jdbcTemplate: JdbcTemplate) {
                 .where("performances.id = $performanceId")
         }
 
+        println(performanceId)
+        println(isPremiere)
+        println(isUpcomingPerformances)
         return jdbcTemplate.query(sqlQueryBuilder.build(), FreePlaceRowMapper())
     }
 }

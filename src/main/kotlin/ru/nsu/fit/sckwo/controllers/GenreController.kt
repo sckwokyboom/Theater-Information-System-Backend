@@ -11,7 +11,7 @@ import ru.nsu.fit.sckwo.repositories.GenreRepository
 
 @Controller
 @RequestMapping("/genres")
-@CrossOrigin(origins = ["http://127.0.0.1:5173"])
+//@CrossOrigin(origins = ["http://127.0.0.1:5173"])
 class GenreController @Autowired constructor(private val genreRepository: GenreRepository) {
     @GetMapping("")
     fun getAllGenres(): ResponseEntity<List<Genre>> {

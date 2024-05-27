@@ -7,7 +7,7 @@ import java.sql.ResultSet
 class SumRowMapper : RowMapper<Sum> {
     override fun mapRow(rs: ResultSet, rowNum: Int): Sum {
         return Sum(
-            rs.getDouble("sum"),
+            rs.getDouble("sum")
         )
     }
 }
