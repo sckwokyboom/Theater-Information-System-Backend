@@ -32,6 +32,10 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
             .from("authors")
             .leftJoin("countries")
             .on("authors.country_of_origin_id = countries.id")
+            .leftJoin("authors_plays")
+            .on("authors_plays.author_id = authors.id")
+            .leftJoin("plays")
+            .on("plays.id = authors_plays.play_id")
 
 //        if (wasPerformed != null) {
 //            sqlQueryBuilder = sqlQueryBuilder
@@ -51,13 +55,9 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
 //        }
         if (wasPerformed != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .leftJoin("authors_plays")
-                .on("authors_plays.author_id = authors.id")
-                .leftJoin("plays")
-                .on("plays.id = authors_plays.play_id")
-                .leftJoin("performances")
-                .on("performances.play_id = plays.id")
-                .where(if (wasPerformed) "performances.play_id IS NOT NULL" else "performances.play_id IS NULL")
+                .leftJoin("performances p4")
+                .on("p4.play_id = plays.id")
+                .where(if (wasPerformed) "p4.play_id IS NOT NULL" else "p4.play_id IS NULL")
         }
 
         if (centuryOfLiving != null) {
@@ -83,37 +83,25 @@ class AuthorRepository(private val jdbcTemplate: JdbcTemplate) {
         }
         if (dateOfStartPerformanceAuthorsPlays != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .leftJoin("authors_plays")
-                .on("authors_plays.author_id = authors.id")
-                .leftJoin("plays")
-                .on("plays.id = authors_plays.play_id")
-                .rightJoin("performances")
-                .on("plays.id = performances.play_id")
-                .where("performances.date <= $dateOfStartPerformanceAuthorsPlays")
+                .rightJoin("performances p3")
+                .on("plays.id = p3.play_id")
+                .where("p3.date <= $dateOfStartPerformanceAuthorsPlays")
         }
 
         if (dateOfEndPerformanceAuthorsPlays != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .leftJoin("authors_plays")
-                .on("authors_plays.author_id = authors.id")
-                .leftJoin("plays")
-                .on("plays.id = authors_plays.play_id")
-                .rightJoin("performances")
-                .on("plays.id = performances.play_id")
-                .where("performances.date >= $dateOfEndPerformanceAuthorsPlays")
+                .rightJoin("performances p2")
+                .on("plays.id = p2.play_id")
+                .where("p2.date >= $dateOfEndPerformanceAuthorsPlays")
         }
 
         if (performanceId != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .leftJoin("authors_plays")
-                .on("authors_plays.author_id = authors.id")
-                .leftJoin("plays")
-                .on("plays.id = authors_plays.play_id")
-                .rightJoin("performances")
-                .on("plays.id = performances.play_id")
-                .where("performances.id = $performanceId")
+                .rightJoin("performances p1")
+                .on("plays.id = p1.play_id")
+                .where("p1.id = $performanceId")
         }
 
-        return jdbcTemplate.query(sqlQueryBuilder.build(), AuthorRowMapper())
+        return jdbcTemplate.query(sqlQueryBuilder.build(), AuthorRowMapper()).distinctBy { it.id }
     }
 }

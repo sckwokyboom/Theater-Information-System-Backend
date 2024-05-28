@@ -49,11 +49,11 @@ class CastingRepository(private val jdbcTemplate: JdbcTemplate) {
         }
         if (dateOfStart != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("performances.start_time >= $dateOfStart")
+                .where("performances.start_time >= '$dateOfStart'")
         }
         if (dateOfEnd != null) {
             sqlQueryBuilder = sqlQueryBuilder
-                .where("performances.end_time <= $dateOfEnd")
+                .where("performances.end_time <= '$dateOfEnd'")
         }
         if (playGenreId != null) {
             sqlQueryBuilder = sqlQueryBuilder
